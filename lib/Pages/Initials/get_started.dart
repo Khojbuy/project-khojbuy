@@ -76,7 +76,13 @@ class GetStartedPage extends StatelessWidget {
             ),
             RichText(
                 text: TextSpan(
-                    recognizer: TapGestureRecognizer()..onTap = () {},
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
+                      },
                     text: 'SKIP LOGIN',
                     style: TextStyle(
                       color: Colors.blueAccent,
