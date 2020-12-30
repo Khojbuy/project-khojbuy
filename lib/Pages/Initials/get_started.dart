@@ -1,5 +1,6 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/Homepages/home.dart';
+import 'package:Khojbuy/Pages/Initials/sign_in.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../Widgets/dialouge.dart';
@@ -25,7 +26,7 @@ class GetStartedPage extends StatelessWidget {
                         fontFamily: 'OpenSans',
                         fontSize: 34,
                         fontWeight: FontWeight.w900,
-                        color: Color.fromRGBO(0, 0, 58, 0.8)),
+                        color: primaryColour),
                   ),
                   SizedBox(
                     height: 6,
@@ -37,7 +38,7 @@ class GetStartedPage extends StatelessWidget {
                         fontFamily: 'OpenSans',
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
-                        color: Color.fromRGBO(0, 0, 160, 0.8)),
+                        color: secondaryColour),
                   )
                 ],
               ),
@@ -46,7 +47,7 @@ class GetStartedPage extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 10.0),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 26),
-                child: Image.asset('assets/images/getstarted.png'),
+                child: Image.asset('assets/images/getstarted.jpg'),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(80)),
               ),
@@ -58,7 +59,7 @@ class GetStartedPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => SignInPage()),
                     );
                   },
                   elevation: 10,
