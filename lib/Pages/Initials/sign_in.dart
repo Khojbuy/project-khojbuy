@@ -1,7 +1,6 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Services/authservice.dart';
 import 'package:animated_button/animated_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -13,7 +12,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final formkey = new GlobalKey<FormState>();
-  String name = '', city = '', phnNo = '';
+  String name, city, phnNo;
 
   String verificationId, smsCode;
   bool codeSent = false;
@@ -207,7 +206,7 @@ class _SignInPageState extends State<SignInPage> {
                                     )),
                                 onChanged: (value) {
                                   setState(() {
-                                    this.phnNo = '+91'+ value;
+                                    this.phnNo = '+91' + value;
                                   });
                                 },
                                 // ignore: missing_return
@@ -256,22 +255,13 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   createUser() async {
-    await AuthService().signInwithOTPSeller(smsCode, verificationId, context);
-    FirebaseFirestore.instance
-        .collection('BuyerData')
-        .doc(FirebaseAuth.instance.currentUser.uid)
-        .set({
-      'Name': name,
-      'City': city,
-      'Contact': phnNo,
-    }).then((value) {
-      print(name + 'added');
-    });
+    await AuthService().signInwithOTPSeller(
+        smsCode, verificationId, context, name, city, phnNo);
   }
 
   Future<void> verifyPhone(String phnNo) async {
     final PhoneVerificationCompleted verified = (AuthCredential authResult) {
-      AuthService().signInSeller(authResult, context);
+      AuthService().signInSeller(authResult, context, name, city, phnNo);
     };
 
     final PhoneVerificationFailed verificationFailed =
