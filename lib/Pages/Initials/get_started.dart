@@ -1,5 +1,6 @@
 import 'package:Khojbuy/Constants/colour.dart';
-import 'package:Khojbuy/Pages/Homepages/home.dart';
+import 'package:Khojbuy/Pages/Controlpage/home.dart';
+
 import 'package:Khojbuy/Pages/Initials/sign_in.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

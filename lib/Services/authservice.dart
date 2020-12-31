@@ -1,6 +1,6 @@
-import 'package:Khojbuy/Pages/Homepages/home.dart';
+import 'package:Khojbuy/Pages/Controlpage/home.dart';
 import 'package:Khojbuy/Pages/Initials/get_started.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -30,23 +30,10 @@ class AuthService {
     BuildContext context,
   ) async {
     FirebaseAuth.instance.signInWithCredential(authCredential).then((value) {
-      FirebaseFirestore.instance
-          .collection("BuyerData")
-          .doc(FirebaseAuth.instance.currentUser.uid)
-          .get()
-          .then((doc) {
-        if (doc.exists) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => Home()),
-          );
-        } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => GetStartedPage()),
-          );
-        }
-      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
     });
   }
 
