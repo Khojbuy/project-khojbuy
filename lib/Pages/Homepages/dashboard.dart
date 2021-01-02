@@ -39,6 +39,7 @@ class DashboardPage extends StatelessWidget {
                 ),
                 SingleChildScrollView(
                   child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: 10,
                       scrollDirection: Axis.vertical,
