@@ -1,6 +1,8 @@
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:Khojbuy/Services/userinfo.dart';
 
 import 'package:Khojbuy/Widgets/notice.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -214,9 +216,28 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                   fontSize: 24),
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            DocumentReference documentReference =
+                                await FirebaseFirestore.instance
+                                    .collection('Requests')
+                                    .add({
+                              'Category': category,
+                              'Customer': FirebaseAuth.instance.currentUser.uid,
+                              'CustomerName': UserInformation().getName(),
+                              'BuyerRemark': remark,
+                              'Items': list,
+                              'Time': TimeOfDay.now(),
+                            });
+                            FirebaseFirestore.instance
+                                .collection('Requests')
+                                .doc(documentReference.id)
+                                .collection('SellerResponses')
+                                .doc()
+                                .set({}).then((value) {
+                              print("Collection Added");
+                            });
+
                             setState(() {
-                              //send request - firebase
                               list.clear();
                             });
                           })

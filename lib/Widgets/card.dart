@@ -1,4 +1,5 @@
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:Khojbuy/Pages/OrderPages/shop_list.dart';
 import 'package:Khojbuy/Pages/RequestPages/categories_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -100,7 +101,12 @@ sendRequestCard(var height, var width, BuildContext context) {
 categoryCard(BuildContext context, String category, String image) {
   var hf = MediaQuery.of(context).size.longestSide;
   return InkWell(
-    onTap: () {},
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ShopList(category)),
+      );
+    },
     child: Card(
       elevation: 12.0,
       child: Container(

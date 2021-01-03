@@ -60,6 +60,7 @@ flutter:
     - assets/images/getstarted.jpg    
     - assets/images/logo.png
     - assets/images/shopping.png
+    - assets/images/shop.png
     - assets/images/categories/
     - assets/markdowns/tnc.md
     - assets/markdowns/privacy.md
