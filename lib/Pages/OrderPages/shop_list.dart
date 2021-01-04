@@ -35,7 +35,7 @@ class ShopList extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Choose the category where you want to send request',
+                    'Choose the shop where you want to place order',
                     style: TextStyle(
                         color: primaryColour,
                         fontFamily: 'OpenSans',

@@ -1,8 +1,9 @@
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ShopPage extends StatelessWidget {
-  final Map<String, dynamic> shopDetails;
+  final QueryDocumentSnapshot shopDetails;
   ShopPage(this.shopDetails);
   @override
   Widget build(BuildContext context) {
@@ -21,35 +22,37 @@ class ShopPage extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            (shopDetails['PhotoURL'] == 'url')
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      radius: 80,
-                      child: Image.asset(
-                        "assets/images/shop.png",
-                        fit: BoxFit.contain,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              (shopDetails['PhotoURL'] == 'url')
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 80,
+                        child: Image.asset(
+                          "assets/images/shop.png",
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40.0),
+                        child: Image.network(
+                          shopDetails['PhotoURL'],
+                          fit: BoxFit.cover,
+                          height: 200,
+                          width: 200,
+                        ),
                       ),
                     ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(40.0),
-                      child: Image.network(
-                        shopDetails['PhotoURL'],
-                        fit: BoxFit.cover,
-                        height: 200,
-                        width: 200,
-                      ),
-                    ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );
