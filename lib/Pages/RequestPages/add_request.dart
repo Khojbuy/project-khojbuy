@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:Khojbuy/Constants/colour.dart';
-import 'package:Khojbuy/Services/userinfo.dart';
+
 import 'package:Khojbuy/Widgets/info_dialouge.dart';
 import 'package:Khojbuy/Widgets/notice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -189,59 +189,69 @@ class _AddRequestPageState extends State<AddRequestPage> {
                           ),
                         ),
                         Center(
-                          child: RaisedButton(
-                              elevation: 8.0,
-                              color: primaryColour,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "SEND REQUEST",
-                                  style: TextStyle(
-                                      fontFamily: 'OpenSans',
-                                      color: Colors.white,
-                                      fontSize: 24),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: RaisedButton(
+                                elevation: 8.0,
+                                color: primaryColour,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
                                 ),
-                              ),
-                              onPressed: () async {
-                                DocumentSnapshot snap = await FirebaseFirestore
-                                    .instance
-                                    .collection('BuyerData')
-                                    .doc(FirebaseAuth.instance.currentUser.uid)
-                                    .get();
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "SEND REQUEST",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        color: Colors.white,
+                                        fontSize: 24),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  DocumentSnapshot snap =
+                                      await FirebaseFirestore.instance
+                                          .collection('BuyerData')
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser.uid)
+                                          .get();
 
-                                String name = snap.data()['Name'];
-                                String city = snap.data()['City'];
+                                  String name = snap.data()['Name'];
+                                  String city = snap.data()['City'];
 
-                                TaskSnapshot snapshot = await FirebaseStorage
-                                    .instance
-                                    .ref()
-                                    .child(
-                                        "Requests/${UserInformation().getName()}")
-                                    .putFile(image)
-                                    .whenComplete(() => print('Image Added'));
-                                String imgurl = await FirebaseStorage.instance
-                                    .ref()
-                                    .child(
-                                        "Requests/${UserInformation().getName()}")
-                                    .getDownloadURL();
+                                  String imgurl;
+                                  if (image == null) {
+                                    imgurl = 'url';
+                                  } else {
+                                    TaskSnapshot snapshot = await FirebaseStorage
+                                        .instance
+                                        .ref()
+                                        .child(
+                                            "Requests/$city/$name/$category/$remarks")
+                                        .putFile(image)
+                                        .whenComplete(
+                                            () => print('Image Added'));
+                                    imgurl = await FirebaseStorage.instance
+                                        .ref()
+                                        .child(
+                                            "Requests/$city/$name/$category/$remarks")
+                                        .getDownloadURL();
+                                  }
 
-                                FirebaseFirestore.instance
-                                    .collection('Request')
-                                    .add({
-                                  'Customer': name,
-                                  'CustomerName':
-                                      FirebaseAuth.instance.currentUser.uid,
-                                  'City': city,
-                                  'Category': category,
-                                  'Item': remarks,
-                                  'Image': imgurl,
-                                }).then((value) {
-                                  Navigator.of(context).pop();
-                                });
-                              }),
+                                  FirebaseFirestore.instance
+                                      .collection('Request')
+                                      .add({
+                                    'Customer': name,
+                                    'CustomerName':
+                                        FirebaseAuth.instance.currentUser.uid,
+                                    'City': city,
+                                    'Category': category,
+                                    'Item': remarks,
+                                    'Image': imgurl,
+                                  }).then((value) {
+                                    Navigator.of(context).pop();
+                                  });
+                                }),
+                          ),
                         )
                       ],
                     ),

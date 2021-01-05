@@ -40,11 +40,11 @@ class ShopList extends StatelessWidget {
                         color: primaryColour,
                         fontFamily: 'OpenSans',
                         fontWeight: FontWeight.bold,
-                        fontSize: width * 0.05),
+                        fontSize: width * 0.06),
                   ),
                 )),
             Expanded(
-              flex: 3,
+              flex: 5,
               child: FutureBuilder(
                   future: FirebaseFirestore.instance
                       .collection('SellerData')

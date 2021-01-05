@@ -1,6 +1,7 @@
 import 'package:Khojbuy/Constants/categories.dart';
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/RequestPages/add_request.dart';
+import 'package:Khojbuy/Widgets/info_dialouge.dart';
 
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,21 @@ class CategoriesPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColour,
+          actions: [
+            IconButton(
+                icon: Icon(
+                  Icons.info_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return InfoDailouge('REQUEST',
+                            'This option of sending request helps you to send any query or product to all the sellers of a particular category, you will get requests from sellers about availabilty and price. So, saving your time in checking different stores for the same');
+                      });
+                })
+          ],
           title: Text(
             "Khojbuy",
             textAlign: TextAlign.center,
@@ -32,18 +48,18 @@ class CategoriesPage extends StatelessWidget {
                   flex: 1,
                   child: Container(
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Text(
                       'Choose the category where you want to send request',
                       style: TextStyle(
                           color: primaryColour,
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.1),
+                          fontSize: width * 0.08),
                     ),
                   )),
               Expanded(
-                flex: 3,
+                flex: 5,
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,

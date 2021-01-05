@@ -64,7 +64,7 @@ sendRequestCard(var height, var width, BuildContext context) {
                             borderRadius: BorderRadius.circular(18.0),
                           ),
                           elevation: 24.0,
-                          color: fourthColour.withOpacity(0.8),
+                          color: fourthColour.withOpacity(0.9),
                           onPressed: () {
                             Navigator.push(
                               context,
