@@ -1,5 +1,6 @@
 import 'package:Khojbuy/Pages/Controlpage/home.dart';
 import 'package:Khojbuy/Pages/Initials/get_started.dart';
+import 'package:Khojbuy/Services/userinfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ class AuthService {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            UserInformation().init();
             return Home();
           } else {
             return GetStartedPage();

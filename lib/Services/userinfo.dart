@@ -3,11 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class UserInformation {
   String name, phnNo, city;
-  void initState() async {
+  init() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('BuyerData')
         .doc(FirebaseAuth.instance.currentUser.uid)
         .get();
+
     name = snap.data()['Name'];
     phnNo = snap.data()['Contact'];
     city = snap.data()['City'];

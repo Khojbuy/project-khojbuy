@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:Khojbuy/Services/userinfo.dart';
 import 'package:Khojbuy/Widgets/info_dialouge.dart';
 import 'package:Khojbuy/Widgets/notice.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AddRequestPage extends StatefulWidget {
   final String category;
@@ -17,6 +23,7 @@ class _AddRequestPageState extends State<AddRequestPage> {
   String remarks;
   String item;
   String imgURL;
+  File image;
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.shortestSide;
@@ -101,10 +108,163 @@ class _AddRequestPageState extends State<AddRequestPage> {
                             },
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                    'Add an image (if any for reference}',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SafeArea(
+                                            child: Container(
+                                              child: new Wrap(
+                                                children: <Widget>[
+                                                  new ListTile(
+                                                      leading: new Icon(
+                                                          Icons.photo_library),
+                                                      title:
+                                                          new Text('Gallery'),
+                                                      onTap: () {
+                                                        imgfromGallery();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      }),
+                                                  new ListTile(
+                                                    leading: new Icon(
+                                                        Icons.photo_camera),
+                                                    title: new Text('Camera'),
+                                                    onTap: () {
+                                                      imgfromCam();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Container(
+                                    height: MediaQuery.of(context)
+                                            .size
+                                            .shortestSide *
+                                        0.4,
+                                    width: MediaQuery.of(context)
+                                            .size
+                                            .shortestSide *
+                                        0.4,
+                                    decoration: BoxDecoration(
+                                        color: primaryColour.withOpacity(0.1),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    child: Center(
+                                      child: (image == null)
+                                          ? Icon(Icons.camera_alt_rounded)
+                                          : Image.file(
+                                              image,
+                                              fit: BoxFit.fill,
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Center(
+                          child: RaisedButton(
+                              elevation: 8.0,
+                              color: primaryColour,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "SEND REQUEST",
+                                  style: TextStyle(
+                                      fontFamily: 'OpenSans',
+                                      color: Colors.white,
+                                      fontSize: 24),
+                                ),
+                              ),
+                              onPressed: () async {
+                                DocumentSnapshot snap = await FirebaseFirestore
+                                    .instance
+                                    .collection('BuyerData')
+                                    .doc(FirebaseAuth.instance.currentUser.uid)
+                                    .get();
+
+                                String name = snap.data()['Name'];
+                                String city = snap.data()['City'];
+
+                                TaskSnapshot snapshot = await FirebaseStorage
+                                    .instance
+                                    .ref()
+                                    .child(
+                                        "Requests/${UserInformation().getName()}")
+                                    .putFile(image)
+                                    .whenComplete(() => print('Image Added'));
+                                String imgurl = await FirebaseStorage.instance
+                                    .ref()
+                                    .child(
+                                        "Requests/${UserInformation().getName()}")
+                                    .getDownloadURL();
+
+                                FirebaseFirestore.instance
+                                    .collection('Request')
+                                    .add({
+                                  'Customer': name,
+                                  'CustomerName':
+                                      FirebaseAuth.instance.currentUser.uid,
+                                  'City': city,
+                                  'Category': category,
+                                  'Item': remarks,
+                                  'Image': imgurl,
+                                }).then((value) {
+                                  Navigator.of(context).pop();
+                                });
+                              }),
+                        )
                       ],
                     ),
                   )
                 ]))),
     );
+  }
+
+  imgfromCam() async {
+    PickedFile img = await ImagePicker()
+        .getImage(source: ImageSource.camera, imageQuality: 50);
+
+    setState(() {
+      image = File(img.path);
+    });
+  }
+
+  imgfromGallery() async {
+    PickedFile img = await ImagePicker()
+        .getImage(source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      image = File(img.path);
+    });
   }
 }
