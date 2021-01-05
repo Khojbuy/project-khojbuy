@@ -1,5 +1,6 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Services/userinfo.dart';
+import 'package:Khojbuy/Widgets/info_dialouge.dart';
 
 import 'package:Khojbuy/Widgets/notice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,18 +9,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AddOrderPage extends StatefulWidget {
-  final String category;
+  final QueryDocumentSnapshot documentSnapshot;
+  AddOrderPage(this.documentSnapshot);
 
-  AddOrderPage(this.category);
   @override
-  _AddOrderPageState createState() => _AddOrderPageState(this.category);
+  _AddOrderPageState createState() => _AddOrderPageState(documentSnapshot);
 }
 
 class _AddOrderPageState extends State<AddOrderPage> {
-  final String category;
+  final QueryDocumentSnapshot documentSnapshot;
+  _AddOrderPageState(this.documentSnapshot);
   List<Map<String, dynamic>> list = [];
   String itemName, amount, remark;
-  _AddOrderPageState(this.category);
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.shortestSide;
@@ -28,8 +30,23 @@ class _AddOrderPageState extends State<AddOrderPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: primaryColour,
+        actions: [
+          IconButton(
+              icon: Icon(
+                Icons.info_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return InfoDailouge('ORDER',
+                          'This option of placing orders helps you to place orders directly to the shop and contact the shopkeeper with all the proceedings, this reduces all your your task of waiting near shops');
+                    });
+              })
+        ],
         title: Text(
-          "SEND REQUEST",
+          "PLACE ORDER",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white,
@@ -49,7 +66,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Category :-  " + category,
+                          "ShopName :- " + documentSnapshot['ShopName'],
                           style: TextStyle(
                               fontFamily: 'OpenSans',
                               fontWeight: FontWeight.bold,
@@ -126,7 +143,9 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                     if (amount != '' && itemName != '') {
                                       list.add({
                                         'ItemName': itemName,
-                                        'Amount': amount
+                                        'Amount': amount,
+                                        'Availability': false,
+                                        'Price': 0,
                                       });
 
                                       itemName = '';
@@ -184,7 +203,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
                         child: TextFormField(
                           initialValue: remark,
                           keyboardType: TextInputType.text,
-                          maxLines: 5,
+                          maxLines: 3,
                           decoration: InputDecoration(
                               hintText: "Delivery before 8pm",
                               labelText: "Additional details(if any)",
@@ -209,7 +228,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              "SEND REQUEST",
+                              "PLACE ORDER",
                               style: TextStyle(
                                   fontFamily: 'OpenSans',
                                   color: Colors.white,
@@ -219,14 +238,16 @@ class _AddOrderPageState extends State<AddOrderPage> {
                           onPressed: () async {
                             DocumentReference documentReference =
                                 await FirebaseFirestore.instance
-                                    .collection('Requests')
+                                    .collection('Order')
                                     .add({
-                              'Category': category,
                               'Customer': FirebaseAuth.instance.currentUser.uid,
                               'CustomerName': UserInformation().getName(),
                               'BuyerRemark': remark,
                               'Items': list,
-                              'Time': TimeOfDay.now(),
+                              'Status': 'new',
+                              'Seller': documentSnapshot.id,
+                              'SellerName': documentSnapshot['ShopName'],
+                              'SellerRemark': ''
                             });
                             FirebaseFirestore.instance
                                 .collection('Requests')

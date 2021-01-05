@@ -1,4 +1,5 @@
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:Khojbuy/Pages/OrderPages/add_order.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -51,6 +52,15 @@ class ShopPage extends StatelessWidget {
                         ),
                       ),
                     ),
+              RaisedButton(
+                  child: Text("Place Order"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddOrderPage(shopDetails)),
+                    );
+                  })
             ],
           ),
         ),

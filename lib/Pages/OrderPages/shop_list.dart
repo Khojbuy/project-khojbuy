@@ -1,18 +1,47 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_page.dart';
+import 'package:Khojbuy/Widgets/info_dialouge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ShopList extends StatelessWidget {
   final String category;
   ShopList(this.category);
+  String city;
+  getCity() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('BuyerData')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get();
+    city = snap.data()['City'];
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.shortestSide;
+    getCity();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: primaryColour,
+        actions: [
+          IconButton(
+              icon: Icon(
+                Icons.info_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return InfoDailouge('ORDER',
+                          'This option of placing orders helps you to place orders directly to the shop and contact the shopkeeper with all the proceedings, this reduces all your your task of waiting near shops');
+                    });
+              })
+        ],
         title: Text(
           "Khojbuy",
           textAlign: TextAlign.center,
@@ -49,6 +78,7 @@ class ShopList extends StatelessWidget {
                   future: FirebaseFirestore.instance
                       .collection('SellerData')
                       .where("Category", isEqualTo: category)
+                      .where("AddressCity", isEqualTo: city)
                       .get(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
