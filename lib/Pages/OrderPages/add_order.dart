@@ -149,6 +149,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                       });
 
                                       itemName = '';
+                                      amount = '';
                                     }
                                   });
                                 })
@@ -156,7 +157,8 @@ class _AddOrderPageState extends State<AddOrderPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 16.0),
                         child: Text(
                           'Here are the items in your list',
                           style: TextStyle(
@@ -165,38 +167,41 @@ class _AddOrderPageState extends State<AddOrderPage> {
                               fontSize: 20),
                         ),
                       ),
-                      ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          itemCount: list.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              dense: true,
-                              title: Text(
-                                list[index]['ItemName'],
-                                style: TextStyle(
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
-                              ),
-                              subtitle: Text(list[index]['Amount'],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: list.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                dense: true,
+                                title: Text(
+                                  list[index]['ItemName'],
                                   style: TextStyle(
                                       fontFamily: 'OpenSans',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18)),
-                              trailing: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      list.removeAt(index);
-                                    });
-                                    print(list);
-                                  },
-                                  child: Icon(
-                                    Icons.delete,
-                                  )),
-                            );
-                          }),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                                subtitle: Text(list[index]['Amount'],
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 18)),
+                                trailing: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        list.removeAt(index);
+                                      });
+                                      print(list);
+                                    },
+                                    child: Icon(
+                                      Icons.delete,
+                                    )),
+                              );
+                            }),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 32.0, horizontal: 12.0),
@@ -236,15 +241,23 @@ class _AddOrderPageState extends State<AddOrderPage> {
                             ),
                           ),
                           onPressed: () async {
+                            DocumentSnapshot snap = await FirebaseFirestore
+                                .instance
+                                .collection('BuyerData')
+                                .doc(FirebaseAuth.instance.currentUser.uid)
+                                .get();
+
+                            String name = snap.data()['Name'];
                             DocumentReference documentReference =
                                 await FirebaseFirestore.instance
                                     .collection('Order')
                                     .add({
                               'Customer': FirebaseAuth.instance.currentUser.uid,
-                              'CustomerName': UserInformation().getName(),
+                              'CustomerName': name,
+                              'City': documentSnapshot['AddressCity'],
                               'BuyerRemark': remark,
                               'Items': list,
-                              'Status': 'new',
+                              'Status': 'received',
                               'Seller': documentSnapshot.id,
                               'SellerName': documentSnapshot['ShopName'],
                               'SellerRemark': ''
@@ -256,9 +269,11 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                 .doc()
                                 .set({}).then((value) {
                               print("Collection Added");
+                              Navigator.of(context).pop();
                             });
 
                             setState(() {
+                              remark = '';
                               list.clear();
                             });
                           })
