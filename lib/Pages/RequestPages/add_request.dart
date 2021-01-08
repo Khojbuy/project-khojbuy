@@ -247,6 +247,7 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                     'Category': category,
                                     'Item': remarks,
                                     'Image': imgurl,
+                                    'Time': Timestamp.now(),
                                   }).then((value) {
                                     Navigator.of(context).pop();
                                   });

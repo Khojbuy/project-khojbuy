@@ -20,7 +20,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
   final QueryDocumentSnapshot documentSnapshot;
   _AddOrderPageState(this.documentSnapshot);
   List<Map<String, dynamic>> list = [];
-  String itemName, amount, remark;
+  String itemName, amount, remark = '';
 
   @override
   Widget build(BuildContext context) {
@@ -260,7 +260,8 @@ class _AddOrderPageState extends State<AddOrderPage> {
                               'Status': 'received',
                               'Seller': documentSnapshot.id,
                               'SellerName': documentSnapshot['ShopName'],
-                              'SellerRemark': ''
+                              'SellerRemark': '',
+                              'Time': Timestamp.now()
                             });
                             FirebaseFirestore.instance
                                 .collection('Requests')
