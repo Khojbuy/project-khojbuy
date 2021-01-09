@@ -113,7 +113,7 @@ categoryCard(BuildContext context, String category, String image) {
         height: hf * 0.13,
         width: hf * 0.13,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

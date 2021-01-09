@@ -12,7 +12,8 @@ class DashboardPage extends StatelessWidget {
         children: [
           sendRequestCard(height, width, context),
           Container(
-            height: height * 0.2,
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            height: height * 0.18,
             child: ListView.builder(
                 itemCount: categories.length,
                 scrollDirection: Axis.horizontal,
