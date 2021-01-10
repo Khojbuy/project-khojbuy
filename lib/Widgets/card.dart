@@ -14,6 +14,7 @@ sendRequestCard(var height, var width, BuildContext context) {
         ClipRRect(
           borderRadius: BorderRadius.circular(24.0),
           child: Container(
+              width: width * 0.85,
               height: height * 0.25,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -27,14 +28,14 @@ sendRequestCard(var height, var width, BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(left: 14.0),
+                        padding: EdgeInsets.only(left: 14.0, top: 10.0),
                         alignment: Alignment.centerLeft,
                         child: SizedBox(
                           width: height * 0.27,
                           child: Text(
                             'HAVE SOMETHING IN MIND ?',
                             style: TextStyle(
-                                fontSize: height * 0.0255,
+                                fontSize: height * 0.025,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'OpenSans'),
@@ -49,7 +50,7 @@ sendRequestCard(var height, var width, BuildContext context) {
                           child: Text(
                             'Let the retailers know about it and get queries',
                             style: TextStyle(
-                                fontSize: height * 0.022,
+                                fontSize: height * 0.02,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
                                 fontFamily: 'OpenSans'),
@@ -57,7 +58,7 @@ sendRequestCard(var height, var width, BuildContext context) {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
                         alignment: Alignment.centerLeft,
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
@@ -87,7 +88,7 @@ sendRequestCard(var height, var width, BuildContext context) {
                   Image.asset(
                     "assets/images/shopping.png",
                     height: height * 0.15,
-                    width: width * 0.3,
+                    width: width * 0.22,
                     fit: BoxFit.fitWidth,
                   ),
                 ],

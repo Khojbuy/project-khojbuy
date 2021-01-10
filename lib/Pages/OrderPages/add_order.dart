@@ -1,5 +1,4 @@
 import 'package:Khojbuy/Constants/colour.dart';
-import 'package:Khojbuy/Services/userinfo.dart';
 import 'package:Khojbuy/Widgets/info_dialouge.dart';
 
 import 'package:Khojbuy/Widgets/notice.dart';

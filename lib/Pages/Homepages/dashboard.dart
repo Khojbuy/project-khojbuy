@@ -10,7 +10,17 @@ class DashboardPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          sendRequestCard(height, width, context),
+          Container(
+            height: height * 0.25,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              children: [
+                sendRequestCard(height, width, context),
+                sendRequestCard(height, width, context),
+              ],
+            ),
+          ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             height: height * 0.18,

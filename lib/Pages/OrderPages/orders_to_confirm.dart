@@ -12,7 +12,7 @@ orderToConfirm(BuildContext context) {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data.documents.toString() == "[]") {
           print(snapshot.data.toString());
@@ -159,25 +159,40 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
-              child: ListTile(
-                title: Text(
-                  'Item Name',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-                trailing: Text(
-                  'Quantity',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
+            SizedBox(
+              height: MediaQuery.of(context).size.shortestSide * 0.15,
             ),
+            documentSnapshot['Status'] == 'received'
+                ? Padding(
+                    padding:
+                        EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
+                    child: ListTile(
+                      title: Text(
+                        'Item Name',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      trailing: Text(
+                        'Quantity',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                : Container(
+                    padding: EdgeInsets.only(left: 26),
+                    child: Text(
+                      "ITEM LIST",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
             (documentSnapshot['Status'] == 'received')
                 ? ListView.builder(
                     itemCount: documentSnapshot['Items'].length,
@@ -249,6 +264,9 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                       );
                     },
                   ),
+            SizedBox(
+              height: MediaQuery.of(context).size.shortestSide * 0.06,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
               child: Row(
@@ -261,20 +279,22 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                         fontWeight: FontWeight.w800,
                         fontFamily: "OpenSans"),
                   ),
-                  Text(
-                    documentSnapshot["BuyerRemark"],
-                    softWrap: true,
-                    maxLines: 5,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "OpenSans"),
+                  Expanded(
+                    child: Text(
+                      documentSnapshot["BuyerRemark"],
+                      softWrap: true,
+                      maxLines: 5,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "OpenSans"),
+                    ),
                   ),
                 ],
               ),
             ),
-            (documentSnapshot['Status'] == 'received' &&
-                    documentSnapshot['SellerRemark'] != '')
+            (documentSnapshot['Status'] == 'received' ||
+                    documentSnapshot['SellerRemark'] == '')
                 ? Container()
                 : Padding(
                     padding: const EdgeInsets.symmetric(
@@ -289,14 +309,16 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                               fontWeight: FontWeight.w800,
                               fontFamily: "OpenSans"),
                         ),
-                        Text(
-                          documentSnapshot["SellerRemark"],
-                          softWrap: true,
-                          maxLines: 5,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "OpenSans"),
+                        Expanded(
+                          child: Text(
+                            documentSnapshot["SellerRemark"],
+                            softWrap: true,
+                            maxLines: 5,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "OpenSans"),
+                          ),
                         ),
                       ],
                     ),
@@ -310,11 +332,12 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                         ),
                         textColor: Colors.white,
                         child: Text(
-                          "CONFIRM",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          "CONFIRM FOR PACKING",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'OpenSans'),
                         ),
-                        splashColor: Colors.blue,
-                        color: Color.fromRGBO(84, 176, 243, 1),
+                        color: primaryColour.withOpacity(0.9),
                         onPressed: () {
                           FirebaseFirestore.instance
                               .collection('Order')
@@ -326,7 +349,7 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                 : Container(),
             (documentSnapshot['Status'] == 'completed')
                 ? Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     child: RaisedButton(
                         shape: new RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(30.0),
@@ -334,10 +357,11 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                         textColor: Colors.white,
                         child: Text(
                           "DELETE",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'OpenSans'),
                         ),
-                        splashColor: Colors.blue,
-                        color: Color.fromRGBO(84, 176, 243, 1),
+                        color: primaryColour.withOpacity(0.9),
                         onPressed: () {
                           FirebaseFirestore.instance
                               .collection('Order')
