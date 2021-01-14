@@ -37,9 +37,7 @@ dependencies:
   google_nav_bar: ^3.1.0
   image_picker: ^0.6.7+17
   url_launcher: ^5.7.10
-  firebase_functions_interop: ^1.0.2
-  node_interop: ^1.2.1
-  js: ^0.6.2
+  
   
 
   
