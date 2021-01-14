@@ -19,7 +19,9 @@ class AddRequestPage extends StatefulWidget {
 
 class _AddRequestPageState extends State<AddRequestPage> {
   final String category;
+
   _AddRequestPageState(this.category);
+  Map<String, int> entries;
   String remarks;
   String item;
   String imgURL;
@@ -218,18 +220,27 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                   String name = snap.data()['Name'];
                                   String city = snap.data()['City'];
 
+                                  QuerySnapshot snapshot =
+                                      await FirebaseFirestore.instance
+                                          .collection('SellerData')
+                                          .where('AddressCity', isEqualTo: city)
+                                          .where('Category',
+                                              isEqualTo: category)
+                                          .get();
+
+                                  /* for (var snaps in snapshot.docs) {
+                                    entries[snaps.id] = 0;
+                                  } */
+
                                   String imgurl;
                                   if (image == null) {
                                     imgurl = 'url';
                                   } else {
-                                    TaskSnapshot snapshot = await FirebaseStorage
-                                        .instance
+                                    await FirebaseStorage.instance
                                         .ref()
                                         .child(
                                             "Requests/$city/$name/$category/$remarks")
-                                        .putFile(image)
-                                        .whenComplete(
-                                            () => print('Image Added'));
+                                        .putFile(image);
                                     imgurl = await FirebaseStorage.instance
                                         .ref()
                                         .child(
@@ -237,19 +248,24 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                         .getDownloadURL();
                                   }
 
+                                  print("Image Added");
+
                                   FirebaseFirestore.instance
                                       .collection('Request')
                                       .add({
-                                    'Customer': name,
-                                    'CustomerName':
+                                    'CustomerName': name,
+                                    'Customer':
                                         FirebaseAuth.instance.currentUser.uid,
                                     'City': city,
                                     'Category': category,
                                     'Item': remarks,
                                     'Image': imgurl,
-                                    'SellerResponses': [],
                                     'Time': Timestamp.now(),
                                   }).then((value) {
+                                    FirebaseFirestore.instance
+                                        .collection('Request')
+                                        .doc(value.id)
+                                        .update(entries);
                                     Navigator.of(context).pop();
                                   });
                                 }),
