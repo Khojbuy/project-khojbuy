@@ -21,7 +21,7 @@ class _AddRequestPageState extends State<AddRequestPage> {
   final String category;
 
   _AddRequestPageState(this.category);
-  Map<String, int> entries;
+
   String remarks;
   String item;
   String imgURL;
@@ -226,11 +226,9 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                           .where('AddressCity', isEqualTo: city)
                                           .where('Category',
                                               isEqualTo: category)
-                                          .get();
-
-                                  /* for (var snaps in snapshot.docs) {
-                                    entries[snaps.id] = 0;
-                                  } */
+                                          .get()
+                                          .whenComplete(
+                                              () => print('data fetched'));
 
                                   String imgurl;
                                   if (image == null) {
@@ -249,10 +247,11 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                   }
 
                                   print("Image Added");
+                                  CollectionReference collectionReference =
+                                      FirebaseFirestore.instance
+                                          .collection('Request');
 
-                                  FirebaseFirestore.instance
-                                      .collection('Request')
-                                      .add({
+                                  collectionReference.add({
                                     'CustomerName': name,
                                     'Customer':
                                         FirebaseAuth.instance.currentUser.uid,
@@ -262,10 +261,14 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                     'Image': imgurl,
                                     'Time': Timestamp.now(),
                                   }).then((value) {
-                                    FirebaseFirestore.instance
-                                        .collection('Request')
-                                        .doc(value.id)
-                                        .update(entries);
+                                    for (var i = 0;
+                                        i < snapshot.docs.length;
+                                        i++) {
+                                      print(snapshot.docs[i].id);
+                                      collectionReference
+                                          .doc(value.id)
+                                          .update({value.id: 0});
+                                    }
                                     Navigator.of(context).pop();
                                   });
                                 }),
