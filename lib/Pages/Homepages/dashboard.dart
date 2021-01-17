@@ -17,7 +17,7 @@ class DashboardPage extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 sendRequestCard(height, width, context),
-                sendRequestCard(height, width, context),
+                sendOrderCard(height, width, context),
               ],
             ),
           ),

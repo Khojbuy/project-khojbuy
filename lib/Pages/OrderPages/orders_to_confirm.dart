@@ -18,72 +18,74 @@ orderToConfirm(BuildContext context) {
           print(snapshot.data.toString());
           return Center(
             child: Text(
-              "You have no orders in this status",
+              "You have no orders placed yet",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           );
         }
 
         if (snapshot.hasData) {
-          return Column(
-            children: snapshot.data.documents.map<Widget>((doc) {
-              String stat;
-              if (doc['Status'] == 'received') {
-                stat = 'Not Responded by Seller';
-              } else if (doc['Status'] == 'waiting') {
-                stat = 'Confirm the order';
-              } else if (doc['Status'] == 'to pack') {
-                stat = 'Seller is working on your order';
-              } else {
-                stat = 'Order is completed';
-              }
-              var fontSize = MediaQuery.of(context).size.shortestSide * 0.069;
+          return SingleChildScrollView(
+            child: Column(
+              children: snapshot.data.documents.map<Widget>((doc) {
+                String stat;
+                if (doc['Status'] == 'received') {
+                  stat = 'Not Responded by Seller';
+                } else if (doc['Status'] == 'waiting') {
+                  stat = 'Confirm the order';
+                } else if (doc['Status'] == 'to pack') {
+                  stat = 'Seller is working on your order';
+                } else {
+                  stat = 'Order is completed';
+                }
+                var fontSize = MediaQuery.of(context).size.shortestSide * 0.069;
 
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => orderDetailsPage(doc, context)),
-                  );
-                },
-                child: Card(
-                  margin:
-                      new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-                  elevation: 20,
-                  child: ListTile(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                    title: Text(
-                      doc['SellerName'],
-                      style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: fontSize * 0.9),
-                    ),
-                    subtitle: Text(
-                      "You had ordered " +
-                          doc['Items'].length.toString() +
-                          " items",
-                      style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black87,
-                          fontSize: fontSize * 0.6),
-                    ),
-                    trailing: Text(
-                      stat,
-                      style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.w600,
-                          color: primaryColour.withOpacity(0.8),
-                          fontSize: fontSize * 0.5),
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => orderDetailsPage(doc, context)),
+                    );
+                  },
+                  child: Card(
+                    margin: new EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 6.0),
+                    elevation: 20,
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      title: Text(
+                        doc['SellerName'],
+                        style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: fontSize * 0.7),
+                      ),
+                      subtitle: Text(
+                        "You had ordered " +
+                            doc['Items'].length.toString() +
+                            " items",
+                        style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87,
+                            fontSize: fontSize * 0.55),
+                      ),
+                      trailing: Text(
+                        stat,
+                        style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w600,
+                            color: primaryColour.withOpacity(0.8),
+                            fontSize: fontSize * 0.48),
+                      ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           );
         }
 

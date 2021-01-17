@@ -5,23 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class ShopList extends StatelessWidget {
   final String category;
-  ShopList(this.category);
-  String city;
-  getCity() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('BuyerData')
-        .doc(FirebaseAuth.instance.currentUser.uid)
-        .get();
-    city = snap.data()['City'];
-  }
+  ShopList(this.category, this.city);
+  final String city;
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.shortestSide;
-    getCity();
 
     return Scaffold(
       appBar: AppBar(

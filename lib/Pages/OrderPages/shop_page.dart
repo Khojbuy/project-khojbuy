@@ -1,11 +1,11 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/add_order.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShopPage extends StatelessWidget {
-  final QueryDocumentSnapshot shopDetails;
+  final shopDetails;
   ShopPage(this.shopDetails);
   @override
   Widget build(BuildContext context) {
