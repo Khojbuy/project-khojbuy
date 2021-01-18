@@ -181,17 +181,18 @@ class RequestDetail extends StatelessWidget {
                               ),
                               trailing: IconButton(
                                 onPressed: () async {
-                                  var query = await FirebaseFirestore.instance
+                                  FirebaseFirestore.instance
                                       .collection('SellerData')
                                       .doc(doc.id)
-                                      .get();
-                                  print(query.data().toString());
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ShopPage(query.data())),
-                                  );
+                                      .snapshots()
+                                      .listen((event) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ShopPage(event)),
+                                    );
+                                  });
                                 },
                                 icon: Icon(Icons.arrow_forward_ios_rounded),
                               ),

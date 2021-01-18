@@ -2,7 +2,6 @@ import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_page.dart';
 import 'package:Khojbuy/Widgets/info_dialouge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ShopList extends StatelessWidget {

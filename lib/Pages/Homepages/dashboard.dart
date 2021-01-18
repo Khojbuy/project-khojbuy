@@ -1,5 +1,7 @@
 import 'package:Khojbuy/Constants/categories.dart';
 import 'package:Khojbuy/Widgets/card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -48,28 +50,45 @@ class DashboardPage extends StatelessWidget {
                       color: Colors.black,
                       fontWeight: FontWeight.w700),
                 ),
-                SingleChildScrollView(
-                  child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 10,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                'assets/images/getstarted.jpg',
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.contain,
-                              ),
-                              Text("Shop Name")
-                            ],
-                          ),
-                        );
-                      }),
-                )
+                FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection('BuyerData')
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .get(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (!snapshot.hasData ||
+                        snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+                    return StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('SellerData')
+                          .where('AddressCity',
+                              isEqualTo: snapshot.data['City'])
+                          //.where('PhotoURL', isNotEqualTo: 'url')
+                          .snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (!snap.hasData) {
+                          return Container();
+                        }
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snap.data.documents.length,
+                            itemBuilder: (context, index) {
+                              if (snap.data.documents[index]['PhotoURL'] ==
+                                  'url') {
+                                return Container();
+                              }
+                              return shopHomeCard(
+                                  snap.data.documents[index], context);
+                            });
+                      },
+                    );
+                  },
+                ),
               ],
             ),
           )

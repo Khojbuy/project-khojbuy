@@ -1,5 +1,6 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_list.dart';
+
 import 'package:Khojbuy/Pages/RequestPages/categories_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -243,6 +244,45 @@ categoryCard(BuildContext context, String category, String image) {
               ),
             )
           ],
+        ),
+      ),
+    ),
+  );
+}
+
+shopHomeCard(shopDetail, BuildContext context) {
+  return Card(
+    elevation: 2.0,
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: ListTile(
+        onTap: () {
+          /*  Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ShopPage(shopDetail)),
+          ); */
+        },
+        leading: Container(
+          width: 100,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(shopDetail['PhotoURL']))),
+        ),
+        title: Text(
+          shopDetail['ShopName'],
+          style: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 14,
+              fontWeight: FontWeight.w600),
+        ),
+        subtitle: Text(
+          shopDetail['DealsIn'],
+          style: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 10,
+              fontWeight: FontWeight.w600),
         ),
       ),
     ),
