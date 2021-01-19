@@ -17,6 +17,7 @@ class AddOrderPage extends StatefulWidget {
 
 class _AddOrderPageState extends State<AddOrderPage> {
   final QueryDocumentSnapshot documentSnapshot;
+  final formkey = new GlobalKey<FormState>();
   _AddOrderPageState(this.documentSnapshot);
   List<Map<String, dynamic>> list = [];
   String itemName, amount, remark = '';
@@ -78,81 +79,84 @@ class _AddOrderPageState extends State<AddOrderPage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.0),
                             color: primaryColour.withOpacity(0.2)),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Enter the item and amount here',
-                              style: TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 3,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        initialValue: itemName,
-                                        decoration: InputDecoration(
-                                            hintText: 'Item Name',
-                                            hintStyle: TextStyle(
-                                                fontFamily: 'OpenSans',
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.w600)),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            itemName = value;
-                                          });
-                                        },
-                                      ),
-                                    )),
-                                Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        initialValue: amount,
-                                        decoration: InputDecoration(
-                                            hintText: 'Quantity',
-                                            hintStyle: TextStyle(
-                                                fontFamily: 'OpenSans',
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.w600)),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            amount = value;
-                                          });
-                                        },
-                                      ),
-                                    )),
-                              ],
-                            ),
-                            RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                ),
-                                child: Text(
-                                  "Enter",
-                                  style: TextStyle(fontFamily: 'OpenSans'),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    if (amount != '' && itemName != '') {
-                                      list.add({
-                                        'ItemName': itemName,
-                                        'Amount': amount,
-                                        'Availability': false,
-                                        'Price': 0,
-                                      });
-
-                                      itemName = '';
-                                      amount = '';
-                                    }
-                                  });
-                                })
-                          ],
+                        child: Form(
+                          key: formkey,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Add the item and amount here',
+                                style: TextStyle(
+                                    fontFamily: 'OpenSans',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16),
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      flex: 3,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          initialValue: itemName,
+                                          decoration: InputDecoration(
+                                              hintText: 'Item Name',
+                                              hintStyle: TextStyle(
+                                                  fontFamily: 'OpenSans',
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.w600)),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              itemName = value;
+                                            });
+                                          },
+                                        ),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: TextFormField(
+                                          initialValue: amount,
+                                          decoration: InputDecoration(
+                                              hintText: 'Quantity',
+                                              hintStyle: TextStyle(
+                                                  fontFamily: 'OpenSans',
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.w600)),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              amount = value;
+                                            });
+                                          },
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                  child: Text(
+                                    "Enter",
+                                    style: TextStyle(fontFamily: 'OpenSans'),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      formkey.currentState.save();
+                                      if (amount != '' && itemName != '') {
+                                        list.add({
+                                          'ItemName': itemName,
+                                          'Amount': amount,
+                                          'Availability': false,
+                                          'Price': 0,
+                                        });
+                                      }
+                                    });
+                                    itemName = '';
+                                    amount = '';
+                                  })
+                            ],
+                          ),
                         ),
                       ),
                       Padding(

@@ -236,9 +236,9 @@ categoryCard(BuildContext context, String category, String image) {
                 category,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontFamily: 'Opensans',
+                    fontFamily: 'OpenSans',
                     fontSize: 11,
-                    color: primaryColour,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),
             )

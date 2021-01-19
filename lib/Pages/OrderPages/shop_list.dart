@@ -56,7 +56,7 @@ class ShopList extends StatelessWidget {
                   child: Text(
                     'Choose the shop where you want to place order',
                     style: TextStyle(
-                        color: primaryColour,
+                        color: Colors.black,
                         fontFamily: 'OpenSans',
                         fontWeight: FontWeight.bold,
                         fontSize: width * 0.06),
@@ -94,7 +94,7 @@ class ShopList extends StatelessWidget {
                                 padding: EdgeInsets.all(8.0),
                                 child: Card(
                                   elevation: 2,
-                                  color: secondaryColour.withOpacity(0.1),
+                                  color: primaryColour.withOpacity(0.3),
                                   child: ListTile(
                                     dense: true,
                                     title: Text(
@@ -102,7 +102,7 @@ class ShopList extends StatelessWidget {
                                           ['ShopName'],
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          color: primaryColour,
+                                          color: Colors.black,
                                           fontFamily: 'OpenSans',
                                           fontWeight: FontWeight.bold,
                                           fontSize: width * 0.05),
@@ -111,7 +111,7 @@ class ShopList extends StatelessWidget {
                                       snapshot.data.documents[index]['DealsIn'],
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          color: primaryColour,
+                                          color: Colors.black,
                                           fontFamily: 'OpenSans',
                                           fontWeight: FontWeight.bold,
                                           fontSize: width * 0.03),

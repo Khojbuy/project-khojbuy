@@ -27,7 +27,7 @@ class DashboardPage extends StatelessWidget {
             child: Text(
               "SHOP BY CATEGORY",
               style: TextStyle(
-                  color: primaryColour,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                   fontSize: 30,
                   fontWeight: FontWeight.bold),

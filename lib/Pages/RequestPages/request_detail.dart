@@ -26,16 +26,17 @@ class RequestDetail extends StatelessWidget {
         ),
         actions: [
           IconButton(
+              tooltip: 'Archive your request',
               icon: Icon(
-                Icons.delete_forever_rounded,
+                Icons.archive_rounded,
                 color: Colors.white,
               ),
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection('Request')
                     .doc(documentSnapshot.id)
-                    .delete()
-                    .then((value) => Navigator.of(context).pop());
+                    .update({'Status': 'completed'}).then(
+                        (value) => Navigator.of(context).pop());
               })
         ],
       ),
@@ -127,7 +128,7 @@ class RequestDetail extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 12.0),
+                padding: const EdgeInsets.only(right: 18.0),
                 child: StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('Request')

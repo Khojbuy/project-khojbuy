@@ -63,7 +63,7 @@ class CategoriesPage extends StatelessWidget {
                           ? 'Choose the category where you want to place order'
                           : 'Choose the category where you want to send request',
                       style: TextStyle(
-                          color: primaryColour,
+                          color: Colors.black,
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
                           fontSize: width * 0.08),
@@ -104,14 +104,14 @@ class CategoriesPage extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
                             elevation: 2,
-                            color: secondaryColour.withOpacity(0.15),
+                            color: primaryColour.withOpacity(0.3),
                             child: ListTile(
                                 dense: true,
                                 title: Text(
                                   categories[index].toUpperCase(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: primaryColour,
+                                      color: Colors.black,
                                       fontFamily: 'OpenSans',
                                       fontWeight: FontWeight.bold,
                                       fontSize: width * 0.06),

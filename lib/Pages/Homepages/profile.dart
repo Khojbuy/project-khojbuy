@@ -5,6 +5,7 @@ import 'package:Khojbuy/Widgets/dialouge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -90,6 +91,65 @@ class _ProfilePageState extends State<ProfilePage> {
                       'privacy.md', context),
                   listItem(Icons.details_rounded, 'Terms and Conditions',
                       'tnc.md', context),
+                  listItem(Icons.campaign_rounded, 'About Us', '', context),
+                  InkWell(
+                    onTap: () async {
+                      final Uri feedback = Uri(
+                        scheme: 'mailto',
+                        path: 'contact.khojbuy@gmail.com',
+                        //add subject and body here
+                      );
+                      var url = feedback.toString();
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch';
+                      }
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.feedback_rounded,
+                        color: Colors.black87,
+                      ),
+                      title: Text(
+                        'Feedback',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      final Uri feedback = Uri(
+                        scheme: 'tel',
+                        path: '+918895498640',
+                        //add subject and body here
+                      );
+                      var url = feedback.toString();
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch';
+                      }
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.call_rounded,
+                        color: Colors.black87,
+                      ),
+                      title: Text(
+                        'Contact Us',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       showModalBottomSheet(
@@ -137,48 +197,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ],
                               ),
-                            )
-                                /*  ListTile(
-                              dense: true,
-                              title: Expanded(
-                                  flex: 7,
-                                  child: Text('Do you want to sign-out ?')),
-                              trailing: Expanded(
-                                flex: 1,
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.cancel_rounded,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        }),
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.check_circle_rounded,
-                                          color: Colors.green,
-                                        ),
-                                        onPressed: () {
-                                          AuthService().signOut(context);
-                                        })
-                                  ],
-                                ),
-                              ),
-                            ) */
-                                );
+                            ));
                           });
                     },
                     child: ListTile(
                       leading: Icon(
                         Icons.logout,
-                        color: primaryColour,
+                        color: Colors.black87,
                       ),
                       title: Text(
                         'SIGN OUT',
                         style: TextStyle(
-                            color: primaryColour,
+                            color: Colors.black,
                             fontFamily: 'OpenSans',
                             fontWeight: FontWeight.w700,
                             fontSize: 16),
@@ -207,12 +237,12 @@ listItem(IconData iconData, String head, String path, BuildContext context) {
     child: ListTile(
       leading: Icon(
         iconData,
-        color: primaryColour,
+        color: Colors.black87,
       ),
       title: Text(
         head,
         style: TextStyle(
-            color: primaryColour,
+            color: Colors.black,
             fontFamily: 'OpenSans',
             fontWeight: FontWeight.w700,
             fontSize: 16),

@@ -265,6 +265,7 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                             .instance.currentUser.uid,
                                         'City': city,
                                         'Category': category,
+                                        'Status': 'active',
                                         'Item': remarks,
                                         'Image': imgurl,
                                         'Time': Timestamp.now(),
