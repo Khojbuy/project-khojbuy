@@ -1,7 +1,6 @@
 import 'package:Khojbuy/Constants/categories.dart';
+import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Widgets/card.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -24,20 +23,30 @@ class DashboardPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            height: height * 0.18,
-            child: ListView.builder(
-                itemCount: categories.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: categoryCard(
-                        context, categories[index], catImages[index]),
-                  );
-                }),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Text(
+              "SHOP BY CATEGORY",
+              style: TextStyle(
+                  color: primaryColour,
+                  fontFamily: 'OpenSans',
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
           Container(
+            padding: EdgeInsets.symmetric(horizontal: 4.0),
+            height: height * 0.5,
+            child: GridView.count(
+              crossAxisCount: 4,
+              children: List.generate(
+                16,
+                (index) =>
+                    categoryCard(context, categories[index], catImages[index]),
+              ),
+            ),
+          )
+
+          /* Container(
             padding: EdgeInsets.only(top: 20.0),
             child: Column(
               children: [
@@ -91,7 +100,7 @@ class DashboardPage extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ) */
         ],
       ),
     );

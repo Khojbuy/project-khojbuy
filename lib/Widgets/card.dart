@@ -214,33 +214,32 @@ categoryCard(BuildContext context, String category, String image) {
       );
     },
     child: Card(
-      elevation: 4.0,
+      elevation: 2.0,
       child: Container(
-        height: hf * 0.13,
-        width: hf * 0.13,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset(
               image,
-              height: hf * 0.08,
-              width: hf * 0.1,
+              height: hf * 0.055,
+              width: hf * 0.055,
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                vertical: 4.0,
+                horizontal: 2.0,
+                vertical: 3.0,
               ),
               child: Text(
                 category,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: 'Opensans',
-                    fontSize: 16,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w700),
+                    fontSize: 11,
+                    color: primaryColour,
+                    fontWeight: FontWeight.bold),
               ),
             )
           ],

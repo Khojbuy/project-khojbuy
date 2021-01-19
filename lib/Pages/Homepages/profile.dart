@@ -1,4 +1,5 @@
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:Khojbuy/Services/authservice.dart';
 import 'package:Khojbuy/Widgets/dialouge.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -88,7 +89,102 @@ class _ProfilePageState extends State<ProfilePage> {
                   listItem(Icons.privacy_tip_rounded, 'Privacy Policy',
                       'privacy.md', context),
                   listItem(Icons.details_rounded, 'Terms and Conditions',
-                      'tnc.md', context)
+                      'tnc.md', context),
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SafeArea(
+                                child: Container(
+                              color: primaryColour.withOpacity(0.2),
+                              height:
+                                  MediaQuery.of(context).size.longestSide * 0.1,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Do you want to sign-out ?',
+                                    style: TextStyle(
+                                        color: primaryColour,
+                                        fontFamily: 'OpenSans',
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16),
+                                  ),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.cancel_rounded,
+                                            color: Colors.red[900],
+                                            size: 40,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          }),
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.check_circle_rounded,
+                                            color: Colors.green[900],
+                                            size: 40,
+                                          ),
+                                          onPressed: () {
+                                            AuthService().signOut(context);
+                                          })
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                                /*  ListTile(
+                              dense: true,
+                              title: Expanded(
+                                  flex: 7,
+                                  child: Text('Do you want to sign-out ?')),
+                              trailing: Expanded(
+                                flex: 1,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                        icon: Icon(
+                                          Icons.cancel_rounded,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        }),
+                                    IconButton(
+                                        icon: Icon(
+                                          Icons.check_circle_rounded,
+                                          color: Colors.green,
+                                        ),
+                                        onPressed: () {
+                                          AuthService().signOut(context);
+                                        })
+                                  ],
+                                ),
+                              ),
+                            ) */
+                                );
+                          });
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.logout,
+                        color: primaryColour,
+                      ),
+                      title: Text(
+                        'SIGN OUT',
+                        style: TextStyle(
+                            color: primaryColour,
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16),
+                      ),
+                    ),
+                  )
                 ],
               );
             },
