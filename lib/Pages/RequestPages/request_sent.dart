@@ -1,3 +1,4 @@
+import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/RequestPages/request_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,13 +47,28 @@ requestList(BuildContext context) {
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                           fontSize: fontSize * 0.65)),
-                  subtitle: Text(
-                    doc['Category'],
-                    style: TextStyle(
-                        fontFamily: 'OpenSans',
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                        fontSize: fontSize * 0.55),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        doc['Category'],
+                        style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                            fontSize: fontSize * 0.55),
+                      ),
+                      (doc['Status'] == 'completed')
+                          ? Text(
+                              doc['Status'],
+                              style: TextStyle(
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.w500,
+                                  color: primaryColour,
+                                  fontSize: fontSize * 0.55),
+                            )
+                          : Container(),
+                    ],
                   ),
                 ),
               ),

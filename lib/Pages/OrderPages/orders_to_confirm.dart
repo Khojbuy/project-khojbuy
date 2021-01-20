@@ -138,6 +138,29 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                 ],
               ),
             ),
+             Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'ORDER TIME - ',
+                    style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.bold,
+                        fontSize: width * 0.06),
+                  ),
+                  Text(
+                    documentSnapshot['Time'].toDate().toString().substring(0, 16),
+                    style: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.w500,
+                        fontSize: width * 0.05),
+                  )
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -349,30 +372,7 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                         }),
                   )
                 : Container(),
-            (documentSnapshot['Status'] == 'completed')
-                ? Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    child: RaisedButton(
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0),
-                        ),
-                        textColor: Colors.white,
-                        child: Text(
-                          "DELETE",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'OpenSans'),
-                        ),
-                        color: primaryColour.withOpacity(0.9),
-                        onPressed: () {
-                          FirebaseFirestore.instance
-                              .collection('Order')
-                              .doc(documentSnapshot.id)
-                              .delete();
-                          Navigator.of(context).pop();
-                        }),
-                  )
-                : Container()
+           
           ],
         ),
       ));

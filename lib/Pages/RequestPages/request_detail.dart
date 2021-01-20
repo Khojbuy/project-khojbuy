@@ -25,19 +25,21 @@ class RequestDetail extends StatelessWidget {
               fontSize: MediaQuery.of(context).size.shortestSide * 0.07),
         ),
         actions: [
-          IconButton(
-              tooltip: 'Archive your request',
-              icon: Icon(
-                Icons.archive_rounded,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                FirebaseFirestore.instance
-                    .collection('Request')
-                    .doc(documentSnapshot.id)
-                    .update({'Status': 'completed'}).then(
-                        (value) => Navigator.of(context).pop());
-              })
+          documentSnapshot['Status'] == 'active'
+              ? IconButton(
+                  tooltip: 'Archive your request',
+                  icon: Icon(
+                    Icons.archive_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    FirebaseFirestore.instance
+                        .collection('Request')
+                        .doc(documentSnapshot.id)
+                        .update({'Status': 'completed'}).then(
+                            (value) => Navigator.of(context).pop());
+                  })
+              : Container()
         ],
       ),
       body: SingleChildScrollView(
@@ -62,6 +64,32 @@ class RequestDetail extends StatelessWidget {
                     ),
                     Text(
                       documentSnapshot.id,
+                      style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.w500,
+                          fontSize: width * 0.05),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'REQUEST TIME - ',
+                      style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width * 0.05),
+                    ),
+                    Text(
+                      documentSnapshot['Time']
+                          .toDate()
+                          .toString()
+                          .substring(0, 16),
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.w500,
