@@ -60,7 +60,7 @@ class _AddRequestPageState extends State<AddRequestPage> {
       ),
       body: Container(
           padding: EdgeInsets.all(10.0),
-          child: (FirebaseAuth.instance.currentUser.uid == null)
+          child: (FirebaseAuth.instance.currentUser == null)
               ? disclaimer(width, context)
               : SingleChildScrollView(
                   child: Column(children: [

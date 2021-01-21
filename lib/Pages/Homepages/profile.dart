@@ -1,9 +1,11 @@
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:Khojbuy/Pages/Initials/get_started.dart';
 import 'package:Khojbuy/Services/authservice.dart';
 import 'package:Khojbuy/Widgets/dialouge.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,213 +17,247 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('BuyerData')
-                .doc(FirebaseAuth.instance.currentUser.uid)
-                .get(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return CircularProgressIndicator(
-                  backgroundColor: fifthColour,
-                );
-              }
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ListTile(
-                      title: Text(
-                        snapshot.data['Name'],
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
+    return FirebaseAuth.instance.currentUser == null
+        ? Center(
+            child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    text: 'To make the best use of Khojbuy, ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontFamily: 'OpenSans',
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => GetStartedPage()));
+                            },
+                          text: 'SIGN IN',
+                          style: TextStyle(
+                            color: primaryColour,
+                            fontSize: 14,
                             fontFamily: 'OpenSans',
-                            fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            snapshot.data['Contact'].toString().substring(3) +
-                                '  |  ' +
-                                snapshot.data['City'],
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black54,
-                                fontFamily: 'OpenSans',
-                                fontWeight: FontWeight.bold),
-                          ),
-                          snapshot.data['Email'] != ''
-                              ? Text(
-                                  snapshot.data['Email'],
+                          )),
+                    ])))
+        : SingleChildScrollView(
+            child: Container(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection('BuyerData')
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return CircularProgressIndicator(
+                        backgroundColor: fifthColour,
+                      );
+                    }
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ListTile(
+                            title: Text(
+                              snapshot.data['Name'],
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data['Contact']
+                                          .toString()
+                                          .substring(3) +
+                                      '  |  ' +
+                                      snapshot.data['City'],
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.black54,
                                       fontFamily: 'OpenSans',
                                       fontWeight: FontWeight.bold),
-                                )
-                              : Container()
-                        ],
-                      ),
-                      trailing: FlatButton(
-                        child: Text(
-                          'Edit',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: primaryColour.withOpacity(0.8),
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          editData(snapshot.data, context);
-                        },
-                      ),
-                    ),
-                  ),
-                  listItem(
-                      Icons.question_answer_rounded, 'FAQs', 'faq.md', context),
-                  listItem(Icons.privacy_tip_rounded, 'Privacy Policy',
-                      'privacy.md', context),
-                  listItem(Icons.details_rounded, 'Terms and Conditions',
-                      'tnc.md', context),
-                  listItem(Icons.campaign_rounded, 'About Us', '', context),
-                  InkWell(
-                    onTap: () async {
-                      final Uri feedback = Uri(
-                        scheme: 'mailto',
-                        path: 'contact.khojbuy@gmail.com',
-                        //add subject and body here
-                      );
-                      var url = feedback.toString();
-                      if (await canLaunch(url)) {
-                        await launch(url);
-                      } else {
-                        throw 'Could not launch';
-                      }
-                    },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.feedback_rounded,
-                        color: Colors.black87,
-                      ),
-                      title: Text(
-                        'Feedback',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'OpenSans',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      final Uri feedback = Uri(
-                        scheme: 'tel',
-                        path: '+918895498640',
-                        //add subject and body here
-                      );
-                      var url = feedback.toString();
-                      if (await canLaunch(url)) {
-                        await launch(url);
-                      } else {
-                        throw 'Could not launch';
-                      }
-                    },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.call_rounded,
-                        color: Colors.black87,
-                      ),
-                      title: Text(
-                        'Contact Us',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'OpenSans',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SafeArea(
-                                child: Container(
-                              color: primaryColour.withOpacity(0.2),
-                              height:
-                                  MediaQuery.of(context).size.longestSide * 0.1,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Do you want to sign-out ?',
-                                    style: TextStyle(
-                                        color: primaryColour,
-                                        fontFamily: 'OpenSans',
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16),
-                                  ),
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.cancel_rounded,
-                                            color: Colors.red[900],
-                                            size: 40,
-                                          ),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          }),
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.check_circle_rounded,
-                                            color: Colors.green[900],
-                                            size: 40,
-                                          ),
-                                          onPressed: () {
-                                            AuthService().signOut(context);
-                                          })
-                                    ],
-                                  ),
-                                ],
+                                ),
+                                snapshot.data['Email'] != ''
+                                    ? Text(
+                                        snapshot.data['Email'],
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black54,
+                                            fontFamily: 'OpenSans',
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Container()
+                              ],
+                            ),
+                            trailing: FlatButton(
+                              child: Text(
+                                'Edit',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: primaryColour.withOpacity(0.8),
+                                    fontFamily: 'OpenSans',
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ));
-                          });
-                    },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.logout,
-                        color: Colors.black87,
-                      ),
-                      title: Text(
-                        'SIGN OUT',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'OpenSans',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16),
-                      ),
-                    ),
-                  )
-                ],
-              );
-            },
-          ),
-        ],
-      )),
-    );
+                              onPressed: () {
+                                editData(snapshot.data, context);
+                              },
+                            ),
+                          ),
+                        ),
+                        listItem(Icons.question_answer_rounded, 'FAQs',
+                            'faq.md', context),
+                        listItem(Icons.privacy_tip_rounded, 'Privacy Policy',
+                            'privacy.md', context),
+                        listItem(Icons.details_rounded, 'Terms and Conditions',
+                            'tnc.md', context),
+                        listItem(Icons.campaign_rounded, 'About Us', 'about.md',
+                            context),
+                        InkWell(
+                          onTap: () async {
+                            final Uri feedback = Uri(
+                              scheme: 'mailto',
+                              path: 'contact.khojbuy@gmail.com',
+                              //add subject and body here
+                            );
+                            var url = feedback.toString();
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              throw 'Could not launch';
+                            }
+                          },
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.feedback_rounded,
+                              color: Colors.black87,
+                            ),
+                            title: Text(
+                              'Feedback',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            final Uri feedback = Uri(
+                              scheme: 'tel',
+                              path: '+918895498640',
+                              //add subject and body here
+                            );
+                            var url = feedback.toString();
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              throw 'Could not launch';
+                            }
+                          },
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.call_rounded,
+                              color: Colors.black87,
+                            ),
+                            title: Text(
+                              'Contact Us',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SafeArea(
+                                      child: Container(
+                                    color: primaryColour.withOpacity(0.2),
+                                    height: MediaQuery.of(context)
+                                            .size
+                                            .longestSide *
+                                        0.1,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Do you want to sign-out ?',
+                                          style: TextStyle(
+                                              color: primaryColour,
+                                              fontFamily: 'OpenSans',
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16),
+                                        ),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                                icon: Icon(
+                                                  Icons.cancel_rounded,
+                                                  color: Colors.red[900],
+                                                  size: 40,
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                }),
+                                            IconButton(
+                                                icon: Icon(
+                                                  Icons.check_circle_rounded,
+                                                  color: Colors.green[900],
+                                                  size: 40,
+                                                ),
+                                                onPressed: () {
+                                                  AuthService()
+                                                      .signOut(context);
+                                                })
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ));
+                                });
+                          },
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.logout,
+                              color: Colors.black87,
+                            ),
+                            title: Text(
+                              'SIGN OUT',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'OpenSans',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
+              ],
+            )),
+          );
   }
 }
 

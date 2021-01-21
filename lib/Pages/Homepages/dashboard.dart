@@ -22,7 +22,9 @@ class DashboardPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: EdgeInsets.symmetric(
+              horizontal: 10,
+            ),
             child: Text(
               "SHOP BY CATEGORY",
               style: TextStyle(

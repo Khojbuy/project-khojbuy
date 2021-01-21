@@ -7,193 +7,41 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 sendRequestCard(var height, var width, BuildContext context) {
-  return Card(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
-    elevation: 12.0,
-    margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
-    child: Stack(
-      fit: StackFit.loose,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(24.0),
-          child: Container(
-              width: width * 0.85,
-              height: height * 0.25,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                colors: [primaryColour, secondaryColour],
-                begin: Alignment.topLeft,
-              )),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 14.0, top: 10.0),
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          width: height * 0.27,
-                          child: Text(
-                            'HAVE SOMETHING IN MIND ?',
-                            style: TextStyle(
-                                fontSize: height * 0.025,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'OpenSans'),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 14.0, top: 10.0),
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          width: height * 0.26,
-                          child: Text(
-                            'Let the retailers know about it and get queries',
-                            style: TextStyle(
-                                fontSize: height * 0.02,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'OpenSans'),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        alignment: Alignment.centerLeft,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          elevation: 24.0,
-                          color: fourthColour.withOpacity(0.9),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CategoriesPage(1)),
-                            );
-                          },
-                          child: Text(
-                            'SEND REQUEST',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: height * 0.03,
-                                fontFamily: 'OpenSans',
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Image.asset(
-                    "assets/images/shopping.png",
-                    height: height * 0.15,
-                    width: width * 0.22,
-                    fit: BoxFit.fitWidth,
-                  ),
-                ],
-              )),
-        ),
-      ],
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CategoriesPage(1)),
+        );
+      },
+      child: Image.asset(
+        'assets/images/request.png',
+        height: height * 0.15,
+        width: width * 0.88,
+        //fit: BoxFit.contain,
+      ),
     ),
   );
 }
 
 sendOrderCard(var height, var width, BuildContext context) {
-  return Card(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
-    elevation: 12.0,
-    margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
-    child: Stack(
-      fit: StackFit.loose,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(24.0),
-          child: Container(
-              width: width * 0.85,
-              height: height * 0.25,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                colors: [primaryColour, secondaryColour],
-                begin: Alignment.topLeft,
-              )),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 14.0, top: 10.0),
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          width: height * 0.27,
-                          child: Text(
-                            'HAVE SOMETHING IN MIND ?',
-                            style: TextStyle(
-                                fontSize: height * 0.025,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'OpenSans'),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 14.0, top: 10.0),
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          width: height * 0.26,
-                          child: Text(
-                            'Let the retailers know about it and get queries',
-                            style: TextStyle(
-                                fontSize: height * 0.02,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'OpenSans'),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        alignment: Alignment.centerLeft,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          elevation: 24.0,
-                          color: fourthColour.withOpacity(0.9),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CategoriesPage(0)),
-                            );
-                          },
-                          child: Text(
-                            'SEND ORDER',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: height * 0.03,
-                                fontFamily: 'OpenSans',
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Image.asset(
-                    "assets/images/shopping.png",
-                    height: height * 0.15,
-                    width: width * 0.22,
-                    fit: BoxFit.fitWidth,
-                  ),
-                ],
-              )),
-        ),
-      ],
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CategoriesPage(0)),
+        );
+      },
+      child: Image.asset(
+        'assets/images/order.png',
+        height: height * 0.15,
+        width: width * 0.88,
+        //fit: BoxFit.contain,
+      ),
     ),
   );
 }

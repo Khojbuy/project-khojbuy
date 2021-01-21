@@ -61,12 +61,14 @@ flutter:
   assets:
     - assets/images/getstarted.jpg    
     - assets/images/logo.png
-    - assets/images/shopping.png
+    - assets/images/request.png
+    - assets/images/order.png
     - assets/images/shop.png
     - assets/images/categories/
     - assets/markdowns/tnc.md
     - assets/markdowns/privacy.md
     - assets/markdowns/faq.md
+    - assets/markdowns/about.md
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
