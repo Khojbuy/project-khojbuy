@@ -133,9 +133,9 @@ class _SignInPageState extends State<SignInPage> {
                                       fontFamily: 'OpenSans',
                                       fontSize: 16,
                                     )),
-                                onChanged: (value) {
+                                onSaved: (value) {
                                   setState(() {
-                                    this.phnNo = "+91" + value;
+                                    this.name = value;
                                   });
                                 },
                                 validator: (val) {
@@ -204,15 +204,15 @@ class _SignInPageState extends State<SignInPage> {
                                       fontFamily: 'OpenSans',
                                       fontSize: 16,
                                     )),
-                                onChanged: (value) {
+                                onSaved: (value) {
                                   setState(() {
                                     this.phnNo = '+91' + value;
                                   });
                                 },
                                 // ignore: missing_return
                                 validator: (val) {
-                                  if (val.length == 0) {
-                                    return "Phone number cannot be empty";
+                                  if (val.length == 0 || val.length != 10) {
+                                    return "Phone number is not validr";
                                   } else {
                                     return null;
                                   }
@@ -229,7 +229,13 @@ class _SignInPageState extends State<SignInPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: AnimatedButton(
                     onPressed: () {
-                      codeSent ? createUser() : verifyPhone(phnNo);
+                      if (!codeSent) {
+                        formkey.currentState.validate();
+                        formkey.currentState.save();
+                        verifyPhone(phnNo);
+                      } else {
+                        createUser();
+                      }
                     },
                     height: height * 0.05,
                     duration: 50,

@@ -245,12 +245,12 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                         await FirebaseStorage.instance
                                             .ref()
                                             .child(
-                                                "Requests/$city/$name/$category/$remarks")
+                                                "Request/$city/$name/$category/$remarks")
                                             .putFile(image);
                                         imgurl = await FirebaseStorage.instance
                                             .ref()
                                             .child(
-                                                "Requests/$city/$name/$category/$remarks")
+                                                "Request/$city/$name/$category/$remarks")
                                             .getDownloadURL();
                                       }
 
