@@ -91,31 +91,82 @@ class ShopList extends StatelessWidget {
                                 );
                               },
                               child: Container(
-                                padding: EdgeInsets.all(8.0),
+                                height:
+                                    MediaQuery.of(context).size.longestSide *
+                                        0.2,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 4.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0)),
                                 child: Card(
-                                  elevation: 2,
-                                  color: primaryColour.withOpacity(0.3),
-                                  child: ListTile(
-                                    dense: true,
-                                    title: Text(
-                                      snapshot.data.documents[index]
-                                          ['ShopName'],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: 'OpenSans',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: width * 0.05),
-                                    ),
-                                    subtitle: Text(
-                                      snapshot.data.documents[index]['DealsIn'],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: 'OpenSans',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: width * 0.03),
-                                    ),
+                                  elevation: 4.0,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      if (index.isEven)
+                                        image(snapshot.data.documents[index]
+                                            ['PhotoURL'])
+                                      else if (index.isOdd)
+                                        Container()
+                                      else
+                                        Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              snapshot.data
+                                                  .documents[index]['ShopName']
+                                                  .toString()
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontFamily: 'OpenSans',
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.fade,
+                                            ),
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .shortestSide *
+                                                  0.45,
+                                              child: Text(
+                                                snapshot.data
+                                                    .documents[index]['DealsIn']
+                                                    .toString(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    fontFamily: 'OpenSans',
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                softWrap: true,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      if (index.isOdd)
+                                        image(snapshot.data.documents[index]
+                                            ['PhotoURL'])
+                                      else if (index.isEven)
+                                        Container()
+                                      else
+                                        Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                    ],
                                   ),
                                 ),
                               ));
@@ -128,5 +179,26 @@ class ShopList extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  image(String url) {
+    return (url == 'url')
+        ? CircleAvatar(
+            backgroundColor: Colors.transparent,
+            radius: 50,
+            child: Image.asset(
+              "assets/images/shop.png",
+              fit: BoxFit.contain,
+            ),
+          )
+        : ClipRRect(
+            borderRadius: BorderRadius.circular(60.0),
+            child: Image.network(
+              url,
+              fit: BoxFit.cover,
+              height: 120,
+              width: 120,
+            ),
+          );
   }
 }

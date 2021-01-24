@@ -150,7 +150,7 @@ dataTile(String field, String detail, BuildContext context) {
           style: TextStyle(
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold,
-              fontSize: MediaQuery.of(context).size.shortestSide * 0.07),
+              fontSize: MediaQuery.of(context).size.shortestSide * 0.05),
         ),
         Expanded(
           child: Text(
@@ -159,7 +159,7 @@ dataTile(String field, String detail, BuildContext context) {
             style: TextStyle(
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
-                fontSize: MediaQuery.of(context).size.shortestSide * 0.06),
+                fontSize: MediaQuery.of(context).size.shortestSide * 0.04),
           ),
         )
       ],
