@@ -38,28 +38,27 @@ class DashboardPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 4.0),
-            height: height * 0.5,
+            height: height * 0.25,
             child: GridView.count(
-              crossAxisCount: 4,
+              scrollDirection: Axis.horizontal,
+              crossAxisCount: 2,
               children: List.generate(
-                16,
-                (index) =>
-                    categoryCard(context, categories[index], catImages[index]),
-              ),
+                  16,
+                  (index) => categoryCard(
+                      context, categories[index], catImages[index])),
             ),
           ),
           Container(
               padding: EdgeInsets.only(top: 20.0),
               child: Column(children: [
                 Text(
-                  "Shops near me",
+                  "Shops near me".toUpperCase(),
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      fontFamily: 'Opensans',
-                      fontSize: height * 0.042,
                       color: Colors.black,
-                      fontWeight: FontWeight.w700),
+                      fontFamily: 'OpenSans',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
                 ),
                 FutureBuilder(
                   future: FirebaseFirestore.instance
@@ -151,7 +150,7 @@ class DashboardPage extends StatelessWidget {
                                                         .toString()
                                                         .toUpperCase(),
                                                     style: TextStyle(
-                                                        fontSize: 16,
+                                                        fontSize: 20,
                                                         fontFamily: 'OpenSans',
                                                         fontWeight:
                                                             FontWeight.bold),
@@ -173,7 +172,7 @@ class DashboardPage extends StatelessWidget {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
-                                                          fontSize: 10,
+                                                          fontSize: 12,
                                                           fontFamily:
                                                               'OpenSans',
                                                           fontWeight:

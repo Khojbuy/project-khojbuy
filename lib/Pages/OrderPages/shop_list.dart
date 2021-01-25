@@ -130,7 +130,7 @@ class ShopList extends StatelessWidget {
                                                   .toString()
                                                   .toUpperCase(),
                                               style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: 20,
                                                   fontFamily: 'OpenSans',
                                                   fontWeight: FontWeight.bold),
                                               maxLines: 1,
@@ -147,7 +147,7 @@ class ShopList extends StatelessWidget {
                                                     .toString(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    fontSize: 10,
+                                                    fontSize: 12,
                                                     fontFamily: 'OpenSans',
                                                     fontWeight:
                                                         FontWeight.w500),

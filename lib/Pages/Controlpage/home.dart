@@ -40,6 +40,24 @@ class _HomeState extends State<Home> {
               fontWeight: FontWeight.bold,
               fontSize: MediaQuery.of(context).size.shortestSide * 0.1),
         ),
+        leading: Container(
+          padding: EdgeInsets.all(6.0),
+          child: Image.asset(
+            'assets/images/logo.png',
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: IconButton(
+                icon: Icon(
+                  Icons.notifications,
+                  size: 40,
+                  color: Colors.white,
+                ),
+                onPressed: () {}),
+          )
+        ],
       ),
       body: PageView.builder(
           itemCount: 4,
