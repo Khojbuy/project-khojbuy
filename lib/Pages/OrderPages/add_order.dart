@@ -143,6 +143,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                   onPressed: () {
                                     setState(() {
                                       formkey.currentState.save();
+
                                       if (amount != '' && itemName != '') {
                                         list.add({
                                           'ItemName': itemName,
@@ -150,6 +151,8 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                           'Availability': false,
                                           'Price': 0,
                                         });
+                                      } else {
+                                        snack(context);
                                       }
                                     });
                                     itemName = '';
@@ -249,37 +252,42 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                 .collection('BuyerData')
                                 .doc(FirebaseAuth.instance.currentUser.uid)
                                 .get();
+                            if (list.isEmpty) {
+                              snack(context);
+                              return;
+                            } else {
+                              String name = snap.data()['Name'];
+                              DocumentReference documentReference =
+                                  await FirebaseFirestore.instance
+                                      .collection('Order')
+                                      .add({
+                                'Customer':
+                                    FirebaseAuth.instance.currentUser.uid,
+                                'CustomerName': name,
+                                'City': documentSnapshot['AddressCity'],
+                                'BuyerRemark': remark,
+                                'Items': list,
+                                'Status': 'received',
+                                'Seller': documentSnapshot.id,
+                                'SellerName': documentSnapshot['ShopName'],
+                                'SellerRemark': '',
+                                'Time': Timestamp.now()
+                              });
+                              FirebaseFirestore.instance
+                                  .collection('Requests')
+                                  .doc(documentReference.id)
+                                  .collection('SellerResponses')
+                                  .doc()
+                                  .set({}).then((value) {
+                                print("Collection Added");
+                                Navigator.of(context).pop();
+                              });
 
-                            String name = snap.data()['Name'];
-                            DocumentReference documentReference =
-                                await FirebaseFirestore.instance
-                                    .collection('Order')
-                                    .add({
-                              'Customer': FirebaseAuth.instance.currentUser.uid,
-                              'CustomerName': name,
-                              'City': documentSnapshot['AddressCity'],
-                              'BuyerRemark': remark,
-                              'Items': list,
-                              'Status': 'received',
-                              'Seller': documentSnapshot.id,
-                              'SellerName': documentSnapshot['ShopName'],
-                              'SellerRemark': '',
-                              'Time': Timestamp.now()
-                            });
-                            FirebaseFirestore.instance
-                                .collection('Requests')
-                                .doc(documentReference.id)
-                                .collection('SellerResponses')
-                                .doc()
-                                .set({}).then((value) {
-                              print("Collection Added");
-                              Navigator.of(context).pop();
-                            });
-
-                            setState(() {
-                              remark = '';
-                              list.clear();
-                            });
+                              setState(() {
+                                remark = '';
+                                list.clear();
+                              });
+                            }
                           })
                     ],
                   ),
@@ -288,4 +296,12 @@ class _AddOrderPageState extends State<AddOrderPage> {
       ),
     );
   }
+}
+
+snack(BuildContext context) {
+  Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(
+    'Add items to place order',
+    style: TextStyle(fontFamily: 'OpenSans', fontSize: 20),
+  )));
 }

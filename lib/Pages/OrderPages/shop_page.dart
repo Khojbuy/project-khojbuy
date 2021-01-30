@@ -63,7 +63,11 @@ class ShopPage extends StatelessWidget {
                     dataTile("CITY - ", shopDetails['AddressCity'], context),
                     dataTile("CATEGORY - ", shopDetails['Category'], context),
                     dataTile('DEALS IN - ', shopDetails['DealsIn'], context),
-                    dataTile('SPECIAL - ', shopDetails['Other'], context)
+                    dataTile('SPECIAL - ', shopDetails['Other'], context),
+                    shopDetails['Delivery']
+                        ? dataTile(
+                            '', 'Home Delivery Service Available', context)
+                        : Container()
                   ],
                 ),
               ),

@@ -100,7 +100,7 @@ class DashboardPage extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => ShopPage(
-                                                snapshot
+                                                snap
                                                     .data.documents[index])),
                                       );
                                     },
