@@ -18,6 +18,7 @@ class AddOrderPage extends StatefulWidget {
 class _AddOrderPageState extends State<AddOrderPage> {
   final QueryDocumentSnapshot documentSnapshot;
   final formkey = new GlobalKey<FormState>();
+  final orderkey = GlobalKey<ScaffoldState>();
   _AddOrderPageState(this.documentSnapshot);
   List<Map<String, dynamic>> list = [];
   String itemName, amount, remark = '';
@@ -27,6 +28,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
     var width = MediaQuery.of(context).size.shortestSide;
 
     return Scaffold(
+      key: orderkey,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: primaryColour,
@@ -143,8 +145,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                   onPressed: () {
                                     setState(() {
                                       formkey.currentState.save();
-
-                                      if (amount != '' && itemName != '') {
+                                      if (amount != null && itemName != null) {
                                         list.add({
                                           'ItemName': itemName,
                                           'Amount': amount,
@@ -152,11 +153,16 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                           'Price': 0,
                                         });
                                       } else {
-                                        snack(context);
+                                        orderkey.currentState
+                                            .showSnackBar(SnackBar(
+                                                content: Text(
+                                          'Add item and amount to add to the it',
+                                          style:
+                                              TextStyle(fontFamily: 'OpenSans'),
+                                        )));
                                       }
+                                      return;
                                     });
-                                    itemName = '';
-                                    amount = '';
                                   })
                             ],
                           ),
@@ -253,7 +259,11 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                 .doc(FirebaseAuth.instance.currentUser.uid)
                                 .get();
                             if (list.isEmpty) {
-                              snack(context);
+                              orderkey.currentState.showSnackBar(SnackBar(
+                                  content: Text(
+                                'Add a list to place an order',
+                                style: TextStyle(fontFamily: 'OpenSans'),
+                              )));
                               return;
                             } else {
                               String name = snap.data()['Name'];
@@ -296,12 +306,4 @@ class _AddOrderPageState extends State<AddOrderPage> {
       ),
     );
   }
-}
-
-snack(BuildContext context) {
-  Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(
-    'Add items to place order',
-    style: TextStyle(fontFamily: 'OpenSans', fontSize: 20),
-  )));
 }

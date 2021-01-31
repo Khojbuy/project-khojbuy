@@ -99,6 +99,33 @@ class RequestDetail extends StatelessWidget {
                 ),
               ),
               Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'REQUESTED ITEM - ',
+                      style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width * 0.05),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.shortestSide * 0.5,
+                      child: Text(
+                        documentSnapshot['Item'].toString(),
+                        softWrap: true,
+                        style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.w500,
+                            fontSize: width * 0.05),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.only(
                     left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
                 child: Row(
@@ -171,6 +198,7 @@ class RequestDetail extends StatelessWidget {
                       }
                       return ListView(
                         scrollDirection: Axis.vertical,
+                        physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         children: snapshot.data.documents.map<Widget>((doc) {
                           return Card(

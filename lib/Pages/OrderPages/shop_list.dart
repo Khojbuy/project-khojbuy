@@ -192,7 +192,7 @@ class ShopList extends StatelessWidget {
             ),
           )
         : ClipRRect(
-            borderRadius: BorderRadius.circular(60.0),
+            borderRadius: BorderRadius.circular(20.0),
             child: Image.network(
               url,
               fit: BoxFit.cover,

@@ -86,6 +86,7 @@ class DashboardPage extends StatelessWidget {
                           }
                           return ListView.builder(
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: snap.data.documents.length,
                               itemBuilder: (context, index) {
                                 if (snap.data.documents[index]['PhotoURL'] ==
@@ -100,8 +101,7 @@ class DashboardPage extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => ShopPage(
-                                                snap
-                                                    .data.documents[index])),
+                                                snap.data.documents[index])),
                                       );
                                     },
                                     child: Container(
@@ -219,7 +219,7 @@ image(String url) {
           ),
         )
       : ClipRRect(
-          borderRadius: BorderRadius.circular(60.0),
+          borderRadius: BorderRadius.circular(20.0),
           child: Image.network(
             url,
             fit: BoxFit.cover,

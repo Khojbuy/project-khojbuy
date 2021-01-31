@@ -19,7 +19,7 @@ class AddRequestPage extends StatefulWidget {
 
 class _AddRequestPageState extends State<AddRequestPage> {
   final String category;
-
+  final requestkey = GlobalKey<ScaffoldState>();
   _AddRequestPageState(this.category);
   bool loading = false;
   String remarks;
@@ -30,6 +30,7 @@ class _AddRequestPageState extends State<AddRequestPage> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.shortestSide;
     return Scaffold(
+      key: requestkey,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: primaryColour,
@@ -214,9 +215,20 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                       ),
                                     ),
                                     onPressed: () async {
+                                      if (remarks == null) {
+                                        requestkey.currentState
+                                            .showSnackBar(SnackBar(
+                                                content: Text(
+                                          'Add details of the request to send it',
+                                          style:
+                                              TextStyle(fontFamily: 'OpenSans'),
+                                        )));
+                                        return;
+                                      }
                                       setState(() {
                                         loading = true;
                                       });
+
                                       DocumentSnapshot snap =
                                           await FirebaseFirestore.instance
                                               .collection('BuyerData')

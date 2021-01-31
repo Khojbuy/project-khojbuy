@@ -1,5 +1,6 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/Homepages/dashboard.dart';
+import 'package:Khojbuy/Pages/Homepages/notification.dart';
 import 'package:Khojbuy/Pages/Homepages/orders.dart';
 import 'package:Khojbuy/Pages/Homepages/profile.dart';
 import 'package:Khojbuy/Pages/Homepages/requests.dart';
@@ -52,10 +53,15 @@ class _HomeState extends State<Home> {
             child: IconButton(
                 icon: Icon(
                   Icons.notifications,
-                  size: 40,
+                  size: 30,
                   color: Colors.white,
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Notifications()),
+                  );
+                }),
           )
         ],
       ),
