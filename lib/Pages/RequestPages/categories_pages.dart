@@ -103,8 +103,6 @@ class CategoriesPage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
-                            elevation: 2,
-                            color: primaryColour.withOpacity(0.3),
                             child: ListTile(
                                 dense: true,
                                 title: Text(
