@@ -66,7 +66,7 @@ class CategoriesPage extends StatelessWidget {
                           color: Colors.black,
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.08),
+                          fontSize: width * 0.06),
                     ),
                   )),
               Expanded(
@@ -112,7 +112,7 @@ class CategoriesPage extends StatelessWidget {
                                       color: Colors.black,
                                       fontFamily: 'OpenSans',
                                       fontWeight: FontWeight.bold,
-                                      fontSize: width * 0.06),
+                                      fontSize: width * 0.04),
                                 )),
                           ),
                         ),

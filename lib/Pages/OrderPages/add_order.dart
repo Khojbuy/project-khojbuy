@@ -139,7 +139,7 @@ class _AddOrderPageState extends State<AddOrderPage> {
                                     borderRadius: BorderRadius.circular(18.0),
                                   ),
                                   child: Text(
-                                    "Enter",
+                                    "ADD",
                                     style: TextStyle(fontFamily: 'OpenSans'),
                                   ),
                                   onPressed: () {
