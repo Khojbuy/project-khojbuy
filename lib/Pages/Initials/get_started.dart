@@ -1,5 +1,4 @@
 import 'package:Khojbuy/Constants/colour.dart';
-import 'package:Khojbuy/Pages/Controlpage/home.dart';
 
 import 'package:Khojbuy/Pages/Initials/sign_in.dart';
 import 'package:flutter/gestures.dart';
@@ -82,21 +81,6 @@ class GetStartedPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                RichText(
-                    text: TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Home()),
-                            );
-                          },
-                        text: 'SKIP LOGIN',
-                        style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontSize: 12,
-                          fontFamily: 'OpenSans',
-                        ))),
                 RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
