@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "169186977964-1ea7bdv704guvmjbh44h5qumsoqcr0a2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.khojbuy.KhojBuySeller",
+            "certificate_hash": "a717dc5057a10630e34b2fc6f060bccafa138f3e"
+          }
+        },
+        {
           "client_id": "169186977964-1k8v38csfcd7utp2fqepddr5vjohns1b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -51,6 +59,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "169186977964-3nfp1jgnuun76ai99u8te8lgrtqpiq28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.khojbuy.Khojbuy",
+            "certificate_hash": "9668274e80f265969a49febd0fa9e12f77347dc7"
+          }
+        },
         {
           "client_id": "169186977964-tmpjqpjkscqnn3evk12nlh7ekkps0mop.apps.googleusercontent.com",
           "client_type": 1,
