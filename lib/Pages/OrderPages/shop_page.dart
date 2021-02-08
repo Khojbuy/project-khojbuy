@@ -1,12 +1,28 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/add_order.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-class ShopPage extends StatelessWidget {
+class ShopPage extends StatefulWidget {
   final shopDetails;
+
   ShopPage(this.shopDetails);
+
+  @override
+  _ShopPageState createState() => _ShopPageState(shopDetails);
+}
+
+class _ShopPageState extends State<ShopPage> {
+  final shopDetails;
+  _ShopPageState(this.shopDetails);
+  bool star = false;
+  int rate = 0;
+  String review = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +45,7 @@ class ShopPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              (shopDetails['PhotoURL'] == 'url')
+              (widget.shopDetails['PhotoURL'] == 'url')
                   ? Padding(
                       padding: const EdgeInsets.only(top: 40.0),
                       child: CircleAvatar(
@@ -46,7 +62,7 @@ class ShopPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(40.0),
                         child: Image.network(
-                          shopDetails['PhotoURL'],
+                          widget.shopDetails['PhotoURL'],
                           fit: BoxFit.cover,
                           height: 200,
                           width: 200,
@@ -59,12 +75,17 @@ class ShopPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    dataTile("SHOP NAME - ", shopDetails['ShopName'], context),
-                    dataTile("CITY - ", shopDetails['AddressCity'], context),
-                    dataTile("CATEGORY - ", shopDetails['Category'], context),
-                    dataTile('DEALS IN - ', shopDetails['DealsIn'], context),
-                    dataTile('SPECIAL - ', shopDetails['Other'], context),
-                    shopDetails['Delivery']
+                    dataTile("SHOP NAME - ", widget.shopDetails['ShopName'],
+                        context),
+                    dataTile(
+                        "CITY - ", widget.shopDetails['AddressCity'], context),
+                    dataTile(
+                        "CATEGORY - ", widget.shopDetails['Category'], context),
+                    dataTile(
+                        'DEALS IN - ', widget.shopDetails['DealsIn'], context),
+                    dataTile(
+                        'SPECIAL - ', widget.shopDetails['Other'], context),
+                    widget.shopDetails['Delivery']
                         ? dataTile(
                             '', 'Home Delivery Service Available', context)
                         : Container()
@@ -93,7 +114,7 @@ class ShopPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    AddOrderPage(shopDetails)),
+                                    AddOrderPage(widget.shopDetails)),
                           );
                         }),
                     RaisedButton(
@@ -102,7 +123,7 @@ class ShopPage extends StatelessWidget {
                         ),
                         textColor: Colors.white,
                         child: Text(
-                          "CONTACT SHOP",
+                          "CONTACT US",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontFamily: 'OpenSans'),
@@ -111,7 +132,7 @@ class ShopPage extends StatelessWidget {
                         onPressed: () async {
                           final Uri feedback = Uri(
                             scheme: 'tel',
-                            path: shopDetails['PhoneNo'],
+                            path: widget.shopDetails['PhoneNo'],
                           );
                           var url = feedback.toString();
                           if (await canLaunch(url)) {
@@ -120,19 +141,215 @@ class ShopPage extends StatelessWidget {
                             throw 'Could not launch';
                           }
                         }),
+                    RaisedButton(
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                        ),
+                        textColor: Colors.white,
+                        child: Text(
+                          "RATE US",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'OpenSans'),
+                        ),
+                        color: primaryColour.withOpacity(0.9),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  backgroundColor: Colors.white,
+                                  elevation: 20,
+                                  insetAnimationCurve: Curves.decelerate,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: SizedBox(
+                                    height: MediaQuery.of(context)
+                                            .size
+                                            .longestSide *
+                                        0.3,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                            'RATE ' +
+                                                widget.shopDetails['ShopName']
+                                                    .toString()
+                                                    .toUpperCase(),
+                                            style: TextStyle(
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 20,
+                                                color: Colors.black87),
+                                          ),
+                                        ),
+                                        SmoothStarRating(
+                                          starCount: 5,
+                                          allowHalfRating: false,
+                                          size: 32,
+                                          rating: rate.toDouble(),
+                                          color: primaryColour,
+                                          onRated: (rating) {
+                                            setState(() {
+                                              print(rating.toString());
+                                              rate = rating.toInt();
+                                              star = true;
+                                            });
+                                          },
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0),
+                                          child: TextFormField(
+                                            autocorrect: true,
+                                            initialValue: review,
+                                            keyboardType: TextInputType.text,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 20,
+                                                color: Colors.black87),
+                                            decoration: InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.fromLTRB(
+                                                        20.0, 15.0, 20.0, 0.0),
+                                                hintText: 'Enter your review',
+                                                hintStyle: TextStyle(
+                                                    fontFamily: 'OpenSans',
+                                                    color: Colors.blueGrey)),
+                                            minLines: 1,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                review = value;
+                                              });
+                                            },
+                                            onSaved: (newVal) {
+                                              setState(() {
+                                                review = newVal;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            RaisedButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                elevation: 0.5,
+                                                color: Colors.white,
+                                                child: Text(
+                                                  'NOT NOW',
+                                                  style: TextStyle(
+                                                      fontFamily: 'OpenSans',
+                                                      fontSize: 20,
+                                                      color: Colors.black87),
+                                                )),
+                                            Text(
+                                              '|',
+                                              style: TextStyle(
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 30,
+                                                  color: Colors.black87),
+                                            ),
+                                            RaisedButton(
+                                              elevation: 0.5,
+                                              color: Colors.white,
+                                              onPressed: () async {
+                                                final inst = FirebaseFirestore
+                                                    .instance
+                                                    .collection('SellerData');
+                                                if (rate == 0) {
+                                                  inst
+                                                      .doc(shopDetails.id)
+                                                      .collection('Review')
+                                                      .doc(FirebaseAuth.instance
+                                                          .currentUser.uid)
+                                                      .set({
+                                                    'rating': rate,
+                                                    'comment': review
+                                                  });
+                                                }
+
+                                                inst
+                                                    .doc(shopDetails.id)
+                                                    .collection('Review')
+                                                    .get()
+                                                    .then((value) {
+                                                  int sum = 0;
+                                                  for (var i = 0;
+                                                      i < value.docs.length;
+                                                      i++) {
+                                                    sum +=
+                                                        value.docs[i]['rating'];
+                                                  }
+                                                  sum =
+                                                      sum ~/ value.docs.length;
+                                                  print(sum.toString());
+                                                  inst
+                                                      .doc(shopDetails.id)
+                                                      .update({'Rating': sum});
+                                                });
+
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                'SUBMIT',
+                                                style: TextStyle(
+                                                    fontFamily: 'OpenSans',
+                                                    fontSize: 20,
+                                                    color: Colors.black87),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              });
+                        }),
                   ],
                 ),
-              )
-
-              /*   RaisedButton(
-                  child: Text("Place Order"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddOrderPage(shopDetails)),
-                    );
-                  }) */
+              ),
+              /*  */
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('SellerData')
+                        .doc(widget.shopDetails.id)
+                        .collection('Review')
+                        .snapshots(),
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Container(
+                          child: Text('Check Your Network Connection'),
+                        );
+                      }
+                      if (snapshot.data.documents.toString() == '[]') {
+                        return Container(
+                          child: Text(
+                              'There are no reviews yet. Be the first one to rate this shop'),
+                        );
+                      }
+                      return Container(
+                        child: Text(snapshot.data.toString()),
+                      );
+                    },
+                  ))
             ],
           ),
         ),
