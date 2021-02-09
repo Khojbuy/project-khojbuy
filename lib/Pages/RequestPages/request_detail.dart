@@ -2,6 +2,7 @@ import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pinch_zoom/pinch_zoom.dart';
 
 class RequestDetail extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
@@ -156,11 +157,15 @@ class RequestDetail extends StatelessWidget {
                           color: primaryColour.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
-                        child: Image.network(
+                          child: PinchZoom(
+                        maxScale: 4.0,
+                        zoomedBackgroundColor: Colors.black.withOpacity(0.3),
+                        resetDuration: Duration(microseconds: 100),
+                        image: Image.network(
                           documentSnapshot['Image'],
                           fit: BoxFit.cover,
                         ),
-                      ),
+                      )),
                     )
                   : Padding(
                       padding: const EdgeInsets.all(8.0),

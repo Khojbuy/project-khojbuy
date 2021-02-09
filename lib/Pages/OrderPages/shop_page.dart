@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:pinch_zoom/pinch_zoom.dart';
 
 class ShopPage extends StatefulWidget {
   final shopDetails;
@@ -57,17 +58,24 @@ class _ShopPageState extends State<ShopPage> {
                         ),
                       ),
                     )
-                  : Padding(
+                  : Container(
+                      height: 210,
+                      width: 210,
                       padding: const EdgeInsets.only(top: 40.0),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(40.0),
-                        child: Image.network(
-                          widget.shopDetails['PhotoURL'],
-                          fit: BoxFit.cover,
-                          height: 200,
-                          width: 200,
-                        ),
-                      ),
+                          borderRadius: BorderRadius.circular(40.0),
+                          child: PinchZoom(
+                            maxScale: 4.0,
+                            zoomedBackgroundColor:
+                                Colors.black.withOpacity(0.3),
+                            resetDuration: Duration(microseconds: 100),
+                            image: Image.network(
+                              widget.shopDetails['PhotoURL'],
+                              fit: BoxFit.contain,
+                              height: 200,
+                              width: 200,
+                            ),
+                          )),
                     ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -345,8 +353,60 @@ class _ShopPageState extends State<ShopPage> {
                               'There are no reviews yet. Be the first one to rate this shop'),
                         );
                       }
-                      return Container(
-                        child: Text(snapshot.data.toString()),
+                      return Column(
+                        children: [
+                          Container(
+                            child: Text(
+                              'What customers think about this shop',
+                              style: TextStyle(
+                                fontFamily: 'OpenSans',
+                              ),
+                            ),
+                          ),
+                          ListView.builder(
+                              itemCount: snapshot.data.documents.length,
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (cntxt, index) {
+                                if (snapshot.data.documents[index]['comment'] ==
+                                    '') {
+                                  return Container();
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 14.0,
+                                        right: 10.0,
+                                        top: 8.0,
+                                        bottom: 8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SmoothStarRating(
+                                          isReadOnly: true,
+                                          color: primaryColour,
+                                          rating: snapshot
+                                              .data.documents[index]['rating']
+                                              .toDouble(),
+                                          size: 28,
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            snapshot.data.documents[index]
+                                                ['comment'],
+                                            style: TextStyle(
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 12),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
+                              }),
+                        ],
                       );
                     },
                   ))
