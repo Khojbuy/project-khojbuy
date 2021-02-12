@@ -91,8 +91,10 @@ class _ShopPageState extends State<ShopPage> {
                         "CATEGORY - ", widget.shopDetails['Category'], context),
                     dataTile(
                         'DEALS IN - ', widget.shopDetails['DealsIn'], context),
-                    dataTile(
-                        'SPECIAL - ', widget.shopDetails['Other'], context),
+                    widget.shopDetails['Other'] == ''
+                        ? Container()
+                        : dataTile(
+                            'SPECIAL - ', widget.shopDetails['Other'], context),
                     widget.shopDetails['Delivery']
                         ? dataTile(
                             '', 'Home Delivery Service Available', context)
@@ -390,7 +392,7 @@ class _ShopPageState extends State<ShopPage> {
                                           rating: snapshot
                                               .data.documents[index]['rating']
                                               .toDouble(),
-                                          size: 28,
+                                          size: 20,
                                         ),
                                         Container(
                                           child: Text(

@@ -89,10 +89,12 @@ class DashboardPage extends StatelessWidget {
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: snap.data.documents.length,
                               itemBuilder: (context, index) {
-                                if (snap.data.documents[index]['PhotoURL'] ==
+                                if (snap.data.documents[index]
+                                            ['PhotoURL'] ==
                                         'url' ||
                                     snap.data.documents[index]["Priority"] ==
-                                        false) {
+                                        false ||
+                                    snap.data.documents[index]['display']) {
                                   return Container();
                                 }
                                 return InkWell(
@@ -142,20 +144,25 @@ class DashboardPage extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    snap
-                                                        .data
-                                                        .documents[index]
-                                                            ["ShopName"]
-                                                        .toString()
-                                                        .toUpperCase(),
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontFamily: 'OpenSans',
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.fade,
+                                                  Container(
+                                                    width: 200,
+                                                    child: Text(
+                                                      snap
+                                                          .data
+                                                          .documents[index]
+                                                              ["ShopName"]
+                                                          .toString()
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontFamily:
+                                                              'OpenSans',
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      maxLines: 1,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
                                                   ),
                                                   Container(
                                                     width:
