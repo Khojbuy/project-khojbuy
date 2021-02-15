@@ -1,5 +1,5 @@
 import 'package:Khojbuy/Constants/colour.dart';
-import 'package:Khojbuy/Pages/OrderPages/shop_page.dart';
+import 'package:Khojbuy/Pages/OrderPages/shop_page_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';

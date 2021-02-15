@@ -1,5 +1,6 @@
 import 'package:Khojbuy/Constants/categories.dart';
-import 'package:Khojbuy/Pages/OrderPages/shop_page.dart';
+import 'package:Khojbuy/Pages/OrderPages/shop_page_data.dart';
+
 import 'package:Khojbuy/Widgets/card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,7 +34,7 @@ class DashboardPage extends StatelessWidget {
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'OpenSans',
-                  fontSize: 30,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -57,7 +58,7 @@ class DashboardPage extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'OpenSans',
-                      fontSize: 30,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold),
                 ),
                 FutureBuilder(
@@ -94,7 +95,7 @@ class DashboardPage extends StatelessWidget {
                                         'url' ||
                                     snap.data.documents[index]["Priority"] ==
                                         false ||
-                                    snap.data.documents[index]['display']) {
+                                    !snap.data.documents[index]['display']) {
                                   return Container();
                                 }
                                 return InkWell(
@@ -124,16 +125,6 @@ class DashboardPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            if (index.isEven)
-                                              image(snap.data.documents[index]
-                                                  ['PhotoURL'])
-                                            else if (index.isOdd)
-                                              Container()
-                                            else
-                                              Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
                                             Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
@@ -146,6 +137,9 @@ class DashboardPage extends StatelessWidget {
                                                 children: [
                                                   Container(
                                                     width: 200,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 4.0),
                                                     child: Text(
                                                       snap
                                                           .data
@@ -154,7 +148,7 @@ class DashboardPage extends StatelessWidget {
                                                           .toString()
                                                           .toUpperCase(),
                                                       style: TextStyle(
-                                                          fontSize: 20,
+                                                          fontSize: 16,
                                                           fontFamily:
                                                               'OpenSans',
                                                           fontWeight:
@@ -179,7 +173,7 @@ class DashboardPage extends StatelessWidget {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
-                                                          fontSize: 12,
+                                                          fontSize: 10,
                                                           fontFamily:
                                                               'OpenSans',
                                                           fontWeight:
@@ -190,16 +184,8 @@ class DashboardPage extends StatelessWidget {
                                                 ],
                                               ),
                                             ),
-                                            if (index.isOdd)
-                                              image(snap.data.documents[index]
-                                                  ['PhotoURL'])
-                                            else if (index.isEven)
-                                              Container()
-                                            else
-                                              Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
+                                            image(snap.data.documents[index]
+                                                ['PhotoURL'])
                                           ],
                                         ),
                                       ),
