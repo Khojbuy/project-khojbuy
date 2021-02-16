@@ -100,6 +100,10 @@ class ShopList extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20.0)),
                                 child: Card(
                                   elevation: 4.0,
+                                   shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -130,10 +134,12 @@ class ShopList extends StatelessWidget {
                                                   .toString()
                                                   .toUpperCase(),
                                               style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontFamily: 'OpenSans',
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
+                                                          fontSize: 16,
+                                                          fontFamily:
+                                                              'OpenSans',
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      maxLines: 2,
                                               overflow: TextOverflow.fade,
                                             ),
                                             Container(
@@ -147,11 +153,12 @@ class ShopList extends StatelessWidget {
                                                     .toString(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontFamily: 'OpenSans',
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                                softWrap: true,
+                                                          fontSize: 10,
+                                                          fontFamily:
+                                                              'OpenSans',
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                      softWrap: true,
                                               ),
                                             )
                                           ],
@@ -196,8 +203,8 @@ class ShopList extends StatelessWidget {
             child: Image.network(
               url,
               fit: BoxFit.cover,
-              height: 120,
-              width: 120,
+              height: 100,
+              width: 100,
             ),
           );
   }

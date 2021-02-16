@@ -5,7 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:geocoder/geocoder.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShopPage extends StatefulWidget {
   final shopDetails;
@@ -106,9 +107,22 @@ class _ShopPageState extends State<ShopPage> {
                               ..onTap = () async {
                                 final query =
                                     widget.shopDetails['AddressLocation'] +
+                                        ' ,' +
                                         widget.shopDetails['AddressCity'];
-                                await Geocoder.local
-                                    .findAddressesFromQuery(query);
+                                List<Location> locations =
+                                    await locationFromAddress(query);
+                                //print(locations[0].longitude);
+                                final String googleMapslocationUrl =
+                                    "https://www.google.com/maps/search/?api=1&query=${locations[0].latitude},${locations[0].longitude}";
+                                final String encodedURl =
+                                    Uri.encodeFull(googleMapslocationUrl);
+
+                                if (await canLaunch(encodedURl)) {
+                                  await launch(encodedURl);
+                                } else {
+                                  print('Could not launch $encodedURl');
+                                  throw 'Could not launch $encodedURl';
+                                }
                               },
                             text: "Map",
                             style: TextStyle(
