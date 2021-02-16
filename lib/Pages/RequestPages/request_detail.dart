@@ -53,22 +53,23 @@ class RequestDetail extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'REQUEST ID - ',
+                      'Request ID - ',
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.05),
+                          fontSize: 14),
                     ),
                     Text(
                       documentSnapshot.id,
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.w500,
-                          fontSize: width * 0.05),
+                          fontSize: 12),
                     )
                   ],
                 ),
@@ -76,25 +77,26 @@ class RequestDetail extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'REQUEST TIME - ',
+                      'Date - ',
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.05),
+                          fontSize: 14),
                     ),
                     Text(
                       documentSnapshot['Time']
                           .toDate()
                           .toString()
-                          .substring(0, 16),
+                          .substring(0, 10),
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.w500,
-                          fontSize: width * 0.05),
+                          fontSize: 12),
                     )
                   ],
                 ),
@@ -102,49 +104,49 @@ class RequestDetail extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'REQUESTED ITEM - ',
+                      'Item Requested - ',
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.05),
+                          fontSize: 14),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.shortestSide * 0.5,
                       child: Text(
                         documentSnapshot['Item'].toString(),
                         softWrap: true,
                         style: TextStyle(
                             fontFamily: 'OpenSans',
                             fontWeight: FontWeight.w500,
-                            fontSize: width * 0.05),
+                            fontSize: 12),
                       ),
                     )
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                 child: Row(
                   children: [
                     Text(
-                      'CATEGORY NAME - ',
+                      'Category - ',
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.05),
+                          fontSize: 14),
                     ),
                     Text(
                       documentSnapshot['Category'],
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.w500,
-                          fontSize: width * 0.05),
+                          fontSize: 12),
                     )
                   ],
                 ),
@@ -174,7 +176,7 @@ class RequestDetail extends StatelessWidget {
                         style: TextStyle(
                             fontFamily: 'OpenSans',
                             fontWeight: FontWeight.w700,
-                            fontSize: width * 0.05),
+                            fontSize: 14),
                       ),
                     ),
               Padding(
@@ -184,7 +186,7 @@ class RequestDetail extends StatelessWidget {
                   style: TextStyle(
                       fontFamily: 'OpenSans',
                       fontWeight: FontWeight.w700,
-                      fontSize: width * 0.06),
+                      fontSize: 14),
                 ),
               ),
               Padding(
@@ -215,7 +217,7 @@ class RequestDetail extends StatelessWidget {
                                 style: TextStyle(
                                     fontFamily: 'OpenSans',
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 16),
+                                    fontSize: 14),
                               ),
                               subtitle: Padding(
                                 padding:

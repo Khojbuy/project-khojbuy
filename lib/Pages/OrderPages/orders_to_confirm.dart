@@ -140,7 +140,7 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
               color: Colors.white,
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold,
-              fontSize: MediaQuery.of(context).size.shortestSide * 0.1),
+              fontSize: MediaQuery.of(context).size.shortestSide * 0.085),
         ),
       ),
       body: Container(
@@ -151,72 +151,72 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'ORDER ID - ',
+                      'Order ID - ',
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.06),
+                          fontSize: 14),
                     ),
                     Text(
                       documentSnapshot.id,
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.w500,
-                          fontSize: width * 0.05),
+                          fontSize: 12),
                     )
                   ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'ORDER TIME - ',
+                      'Date - ',
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.06),
+                          fontSize: 14),
                     ),
                     Text(
                       documentSnapshot['Time']
                           .toDate()
                           .toString()
-                          .substring(0, 16),
+                          .substring(0, 10),
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.w500,
-                          fontSize: width * 0.05),
+                          fontSize: 12),
                     )
                   ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'SHOP NAME - ',
+                      'Shop Name - ',
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.bold,
-                          fontSize: width * 0.06),
+                          fontSize: 14),
                     ),
                     Text(
                       documentSnapshot['SellerName'],
                       style: TextStyle(
                           fontFamily: 'OpenSans',
                           fontWeight: FontWeight.w500,
-                          fontSize: width * 0.05),
+                          fontSize: 12),
                     )
                   ],
                 ),
@@ -230,32 +230,33 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                           'Item Name',
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
                         trailing: Text(
                           'Quantity',
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
                     )
                   : Container(
-                      padding: EdgeInsets.only(left: 26),
+                      padding: EdgeInsets.only(left: 26, top: 10.0),
                       child: Text(
-                        "ITEM LIST",
+                        "Item List",
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 22,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
               (documentSnapshot['Status'] == 'received')
                   ? ListView.builder(
                       itemCount: documentSnapshot['Items'].length,
-                      padding: EdgeInsets.all(12.0),
+                      padding: EdgeInsets.only(
+                          left: 12.0, right: 12.0, top: 4.0, bottom: 10.0),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         var items = documentSnapshot['Items'];
@@ -267,15 +268,15 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                             softWrap: true,
                             style: TextStyle(
                                 color: Colors.black87,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
                           ),
                           trailing: Text(
                             items[index]['Amount'],
                             style: TextStyle(
                                 color: Colors.black87,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
                           ),
                         );
                       })
@@ -287,11 +288,12 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                       itemBuilder: (context, index) {
                         var items = documentSnapshot['Items'];
                         return ListTile(
+                          dense: true,
                           title: Text(
                             items[index]['ItemName'],
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold),
                           ),
                           subtitle: Row(
@@ -301,7 +303,7 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                                 items[index]['Amount'],
                                 style: TextStyle(
                                     color: Colors.black45,
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w600),
                               ),
                               items[index]['Availability']
@@ -309,14 +311,14 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                                       '₹' + items[index]['Price'].toString(),
                                       style: TextStyle(
                                           color: Colors.blue,
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w600),
                                     )
                                   : Text(
                                       "Marked Unavailable",
                                       style: TextStyle(
                                           color: Colors.red,
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w600),
                                     ),
                             ],
@@ -330,26 +332,27 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Your Remarks  -   ",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w800,
                           fontFamily: "OpenSans"),
                     ),
-                    Expanded(
-                      child: Text(
-                        documentSnapshot["BuyerRemark"],
-                        softWrap: true,
-                        maxLines: 5,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "OpenSans"),
-                      ),
+                    Text(
+                      documentSnapshot["BuyerRemark"] == ''
+                          ? 'You had no remarks'
+                          : documentSnapshot["BuyerRemark"],
+                      softWrap: true,
+                      maxLines: 5,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "OpenSans"),
                     ),
                   ],
                 ),
@@ -360,26 +363,25 @@ orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
                   : Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 24, vertical: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Seller Remarks  -  ",
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w800,
                                 fontFamily: "OpenSans"),
                           ),
-                          Expanded(
-                            child: Text(
-                              documentSnapshot["SellerRemark"],
-                              softWrap: true,
-                              maxLines: 5,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "OpenSans"),
-                            ),
+                          Text(
+                            documentSnapshot["SellerRemark"],
+                            softWrap: true,
+                            maxLines: 5,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "OpenSans"),
                           ),
                         ],
                       ),

@@ -2,6 +2,7 @@ import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Services/authservice.dart';
 import 'package:animated_button/animated_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -16,6 +17,7 @@ class _SignInPageState extends State<SignInPage> {
 
   String verificationId, smsCode;
   bool codeSent = false;
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -251,7 +253,32 @@ class _SignInPageState extends State<SignInPage> {
                     color: secondaryColour, // validate phn no
                     shape: BoxShape.rectangle,
                   ),
-                )
+                ),
+                codeSent
+                    ? Container(
+                        child: Container(
+                          child: RichText(
+                              text: TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      verifyPhone(phnNo);
+                                    },
+                                  text: 'RESEND OTP',
+                                  style: TextStyle(
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 10,
+                                      color: Colors.blue,
+                                      fontStyle: FontStyle.italic))),
+                        ),
+                      )
+                    : Container(),
+                loading
+                    ? Container(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : Container()
               ],
             ),
           ),
@@ -266,6 +293,9 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future<void> verifyPhone(String phnNo) async {
+    setState(() {
+      this.loading = true;
+    });
     final PhoneVerificationCompleted verified = (AuthCredential authResult) {
       AuthService().signInSeller(authResult, context, name, city, phnNo);
     };
@@ -278,6 +308,7 @@ class _SignInPageState extends State<SignInPage> {
     final PhoneCodeSent smsSent = (String verId, [int forceResend]) async {
       setState(() {
         this.codeSent = true;
+        this.loading = false;
         print("code sent to " + phnNo);
       });
       this.verificationId = verId;

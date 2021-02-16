@@ -1,4 +1,5 @@
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:Khojbuy/Pages/OrderPages/add_order.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_catalouge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -247,6 +248,56 @@ class _ShopPageState extends State<ShopPage> {
                     )
                   ],
                 ),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  RaisedButton(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
+                      textColor: Colors.white,
+                      child: Text(
+                        "PLACE ORDER",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans'),
+                      ),
+                      color: primaryColour.withOpacity(0.9),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  AddOrderPage(widget.shopDetails)),
+                        );
+                      }),
+                  RaisedButton(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
+                      textColor: Colors.white,
+                      child: Text(
+                        "CONTACT US",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans'),
+                      ),
+                      color: primaryColour.withOpacity(0.9),
+                      onPressed: () async {
+                        final Uri feedback = Uri(
+                          scheme: 'tel',
+                          path: widget.shopDetails['PhoneNo'],
+                        );
+                        var url = feedback.toString();
+                        if (await canLaunch(url)) {
+                          await launch(url);
+                        } else {
+                          throw 'Could not launch';
+                        }
+                      }),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
