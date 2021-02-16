@@ -1,4 +1,5 @@
 import 'package:Khojbuy/Constants/colour.dart';
+import 'package:Khojbuy/Pages/OrderPages/shop_catalouge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -207,12 +208,18 @@ class _ShopPageState extends State<ShopPage> {
                     )
                   : Container(),
               InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Catalouge(shopDetails['Menu'])),
+                  );
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RichText(
                         text: TextSpan(
-                            recognizer: TapGestureRecognizer()..onTap = () {},
                             text: "Check Shop's Product List",
                             style: TextStyle(
                                 color: primaryColour,

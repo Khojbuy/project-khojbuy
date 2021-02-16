@@ -114,32 +114,36 @@ class DashboardPage extends StatelessWidget {
                                           0.2,
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 8.0, vertical: 4.0),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0)),
+                                      decoration: BoxDecoration(),
                                       child: Card(
                                         elevation: 4.0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
                                         child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
+                                            image(snap.data.documents[index]
+                                                ['PhotoURL']),
                                             Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      vertical: 8.0),
+                                                vertical: 8.0,
+                                              ),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   Container(
-                                                    width: 200,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 4.0),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .shortestSide *
+                                                            0.45,
                                                     child: Text(
                                                       snap
                                                           .data
@@ -153,9 +157,8 @@ class DashboardPage extends StatelessWidget {
                                                               'OpenSans',
                                                           fontWeight:
                                                               FontWeight.bold),
-                                                      maxLines: 1,
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      maxLines: 2,
+                                                      textAlign: TextAlign.left,
                                                     ),
                                                   ),
                                                   Container(
@@ -170,8 +173,7 @@ class DashboardPage extends StatelessWidget {
                                                           .documents[index]
                                                               ['DealsIn']
                                                           .toString(),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      textAlign: TextAlign.left,
                                                       style: TextStyle(
                                                           fontSize: 10,
                                                           fontFamily:
@@ -184,8 +186,6 @@ class DashboardPage extends StatelessWidget {
                                                 ],
                                               ),
                                             ),
-                                            image(snap.data.documents[index]
-                                                ['PhotoURL'])
                                           ],
                                         ),
                                       ),
@@ -216,8 +216,8 @@ image(String url) {
           child: Image.network(
             url,
             fit: BoxFit.cover,
-            height: 120,
-            width: 120,
+            height: 100,
+            width: 100,
           ),
         );
 }
