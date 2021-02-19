@@ -9,7 +9,7 @@ List<String> categories = [
   "Grocery",
   "Hardware & Machinery",
   "Health & Fitness",
-  "Home Essesntials & Decor",
+  "Home Essentials & Decor",
   "Jewellery",
   "Mobile & Computers",
   "Pets & Food",

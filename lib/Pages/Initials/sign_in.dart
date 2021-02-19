@@ -1,6 +1,5 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Services/authservice.dart';
-import 'package:animated_button/animated_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -229,7 +228,7 @@ class _SignInPageState extends State<SignInPage> {
                 //Button
                 Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: AnimatedButton(
+                  child: RaisedButton(
                     onPressed: () {
                       if (!codeSent) {
                         formkey.currentState.validate();
@@ -239,8 +238,7 @@ class _SignInPageState extends State<SignInPage> {
                         createUser();
                       }
                     },
-                    height: height * 0.05,
-                    duration: 50,
+
                     child: Text(
                       codeSent ? "Sign IN" : "Send OTP",
                       style: TextStyle(
@@ -248,10 +246,12 @@ class _SignInPageState extends State<SignInPage> {
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
-
-                    enabled: true,
+                    elevation: 20,
+                    autofocus: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
                     color: secondaryColour, // validate phn no
-                    shape: BoxShape.rectangle,
                   ),
                 ),
                 codeSent

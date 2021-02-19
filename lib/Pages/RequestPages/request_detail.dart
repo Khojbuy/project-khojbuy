@@ -1,5 +1,6 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_page_data.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
@@ -11,7 +12,6 @@ class RequestDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.shortestSide;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -160,14 +160,21 @@ class RequestDetail extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: PinchZoom(
-                        maxScale: 4.0,
-                        zoomedBackgroundColor: Colors.black.withOpacity(0.3),
-                        resetDuration: Duration(microseconds: 100),
-                        image: Image.network(
-                          documentSnapshot['Image'],
-                          fit: BoxFit.cover,
-                        ),
-                      )),
+                              maxScale: 4.0,
+                              zoomedBackgroundColor:
+                                  Colors.black.withOpacity(0.3),
+                              resetDuration: Duration(microseconds: 100),
+                              image: CachedNetworkImage(
+                                imageUrl: documentSnapshot['Image'],
+                                fadeInCurve: Curves.easeIn,
+                                fadeOutDuration: Duration(microseconds: 100),
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ))),
                     )
                   : Padding(
                       padding: const EdgeInsets.all(8.0),

@@ -1,10 +1,12 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/add_order.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_catalouge.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pinch_zoom/pinch_zoom.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -141,10 +143,22 @@ class _ShopPageState extends State<ShopPage> {
                     clipBehavior: Clip.antiAlias,
                     borderRadius: BorderRadius.circular(12),
                     child: widget.shopDetails['PhotoURL'] != 'url'
-                        ? Image.network(
-                            widget.shopDetails['PhotoURL'],
+                        ? Container(
                             height: 165,
-                            fit: BoxFit.cover,
+                            child: PinchZoom(
+                                maxScale: 4.0,
+                                image: CachedNetworkImage(
+                                  fit: BoxFit.contain,
+                                  imageUrl: widget.shopDetails['PhotoURL'],
+                                  fadeInCurve: Curves.easeIn,
+                                  fadeOutDuration: Duration(microseconds: 100),
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                )),
                           )
                         : Image.asset(
                             "assets/images/shop.png",

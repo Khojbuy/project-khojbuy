@@ -1,6 +1,7 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_page_data.dart';
 import 'package:Khojbuy/Widgets/info_dialouge.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -100,47 +101,44 @@ class ShopList extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20.0)),
                                 child: Card(
                                   elevation: 4.0,
-                                   shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      if (index.isEven)
-                                        image(snapshot.data.documents[index]
-                                            ['PhotoURL'])
-                                      else if (index.isOdd)
-                                        Container()
-                                      else
-                                        Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
+                                      image(snapshot.data.documents[index]
+                                          ['PhotoURL']),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 8.0),
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              snapshot.data
-                                                  .documents[index]['ShopName']
-                                                  .toString()
-                                                  .toUpperCase(),
-                                              style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontFamily:
-                                                              'OpenSans',
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                      maxLines: 2,
-                                              overflow: TextOverflow.fade,
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .shortestSide *
+                                                  0.45,
+                                              child: Text(
+                                                snapshot
+                                                    .data
+                                                    .documents[index]
+                                                        ['ShopName']
+                                                    .toString()
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontFamily: 'OpenSans',
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                maxLines: 3,
+                                                textAlign: TextAlign.left,
+                                              ),
                                             ),
                                             Container(
                                               width: MediaQuery.of(context)
@@ -151,28 +149,18 @@ class ShopList extends StatelessWidget {
                                                 snapshot.data
                                                     .documents[index]['DealsIn']
                                                     .toString(),
-                                                textAlign: TextAlign.center,
+                                                textAlign: TextAlign.left,
                                                 style: TextStyle(
-                                                          fontSize: 10,
-                                                          fontFamily:
-                                                              'OpenSans',
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                      softWrap: true,
+                                                    fontSize: 10,
+                                                    fontFamily: 'OpenSans',
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                softWrap: true,
                                               ),
                                             )
                                           ],
                                         ),
                                       ),
-                                      if (index.isOdd)
-                                        image(snapshot.data.documents[index]
-                                            ['PhotoURL'])
-                                      else if (index.isEven)
-                                        Container()
-                                      else
-                                        Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
                                     ],
                                   ),
                                 ),
@@ -200,12 +188,19 @@ class ShopList extends StatelessWidget {
           )
         : ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
-            child: Image.network(
-              url,
-              fit: BoxFit.cover,
+            child: CachedNetworkImage(
+              imageUrl: url,
               height: 100,
               width: 100,
-            ),
-          );
+              fadeInCurve: Curves.easeIn,
+              fit: BoxFit.cover,
+              fadeOutDuration: Duration(microseconds: 100),
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Container(
+                      height: 50,
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress)),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ));
   }
 }

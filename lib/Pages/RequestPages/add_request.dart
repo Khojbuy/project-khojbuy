@@ -182,7 +182,7 @@ class _AddRequestPageState extends State<AddRequestPage> {
                                           ? Icon(Icons.camera_alt_rounded)
                                           : Image.file(
                                               image,
-                                              fit: BoxFit.fill,
+                                              fit: BoxFit.contain,
                                             ),
                                     ),
                                   ),
@@ -303,8 +303,9 @@ class _AddRequestPageState extends State<AddRequestPage> {
 
   imgfromCam() async {
     PickedFile img = await ImagePicker()
-        .getImage(source: ImageSource.camera, imageQuality: 50);
-
+        .getImage(source: ImageSource.camera, maxHeight: 150, maxWidth: 150);
+    int size = await File(img.path).length();
+    print(size);
     setState(() {
       image = File(img.path);
     });
@@ -312,8 +313,9 @@ class _AddRequestPageState extends State<AddRequestPage> {
 
   imgfromGallery() async {
     PickedFile img = await ImagePicker()
-        .getImage(source: ImageSource.gallery, imageQuality: 50);
-
+        .getImage(source: ImageSource.gallery, maxHeight: 150, maxWidth: 150);
+    int size = await File(img.path).length();
+    print(size);
     setState(() {
       image = File(img.path);
     });

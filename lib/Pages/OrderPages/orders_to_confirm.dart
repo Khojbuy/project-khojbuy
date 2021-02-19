@@ -129,7 +129,6 @@ orderToConfirm(BuildContext context) {
 }
 
 orderDetailsPage(DocumentSnapshot documentSnapshot, BuildContext context) {
-  var width = MediaQuery.of(context).size.shortestSide;
   return Scaffold(
       appBar: AppBar(
         centerTitle: true,
