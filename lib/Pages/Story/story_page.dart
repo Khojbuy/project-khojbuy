@@ -22,11 +22,16 @@ class _StoryPageState extends State<StoryPage> {
   Widget build(BuildContext context) {
     List<StoryItem> storyItems = [];
     for (var item in storyList.data()['stories']) {
-      storyItems.add(StoryItem.pageImage(
+      storyItems.add(StoryItem.inlineImage(
           url: item['url'],
           imageFit: BoxFit.cover,
           duration: Duration(seconds: 15),
-          caption: storyList.data()['name'].toString(),
+          caption: Text(
+            storyList.data()['name'] + '\n' + storyList.data()['category'],
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: 'OpenSans', color: Colors.white, fontSize: 16),
+          ),
           controller: storyController));
     }
     return Scaffold(
@@ -37,7 +42,7 @@ class _StoryPageState extends State<StoryPage> {
           showArrow: true,
           animate: true,
           expand: true,
-          sensitivity: 0.5,
+          sensitivity: 1.0,
           onSwipe: () async {
             final String phnNo = storyList.data()['contact'];
             final String url =
@@ -50,7 +55,11 @@ class _StoryPageState extends State<StoryPage> {
           },
           child: Material(
               color: Colors.transparent,
-              child: Text('Swipe Up', style: TextStyle(color: Colors.white))),
+              child: Text('Swipe Up',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                      fontWeight: FontWeight.w600))),
           body: StoryView(
             progressPosition: ProgressPosition.top,
             repeat: true,
