@@ -1,9 +1,11 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_page_data.dart';
+
 import 'package:Khojbuy/Widgets/info_dialouge.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ShopList extends StatelessWidget {
   final String category;
@@ -12,6 +14,7 @@ class ShopList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     var width = MediaQuery.of(context).size.shortestSide;
 
     return Scaffold(
@@ -60,7 +63,7 @@ class ShopList extends StatelessWidget {
                         color: Colors.black,
                         fontFamily: 'OpenSans',
                         fontWeight: FontWeight.bold,
-                        fontSize: width * 0.06),
+                        fontSize: width * 0.05),
                   ),
                 )),
             Expanded(
