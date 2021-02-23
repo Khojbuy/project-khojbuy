@@ -28,31 +28,6 @@ class DashboardPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-            ),
-            child: Text(
-              "Shop by category",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'OpenSans',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          Container(
-            height: height * 0.25,
-            child: GridView.count(
-              scrollDirection: Axis.horizontal,
-              crossAxisCount: 2,
-              children: List.generate(
-                  16,
-                  (index) => categoryCard(
-                      context, categories[index], catImages[index])),
-            ),
-          ),
           FutureBuilder(
             future: FirebaseFirestore.instance
                 .collection('BuyerData')
@@ -82,7 +57,7 @@ class DashboardPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 20.0, left: 10.0),
+                            padding: EdgeInsets.only(left: 10.0),
                             child: Text(
                               "Advertisements",
                               textAlign: TextAlign.left,
@@ -94,7 +69,7 @@ class DashboardPage extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            height: 180,
+                            height: 140,
                             padding: EdgeInsets.symmetric(horizontal: 10.0),
                             child: ListView.builder(
                                 shrinkWrap: true,
@@ -119,8 +94,8 @@ class DashboardPage extends StatelessWidget {
                                           Container(
                                               padding:
                                                   EdgeInsets.only(top: 6.0),
-                                              height: 150,
-                                              width: 100,
+                                              height: 90,
+                                              width: 60,
                                               child: Material(
                                                 type: MaterialType.canvas,
                                                 shadowColor: Colors.blueGrey,
@@ -128,11 +103,11 @@ class DashboardPage extends StatelessWidget {
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            20.0)),
+                                                            10.0)),
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(
-                                                          20.0),
+                                                          10.0),
                                                   child: CachedNetworkImage(
                                                     width: 100,
                                                     fadeInCurve: Curves.easeIn,
@@ -156,12 +131,22 @@ class DashboardPage extends StatelessWidget {
                                                   ),
                                                 ),
                                               )),
-                                          Text(
-                                            shopList[index]['name'],
-                                            style: TextStyle(
-                                                fontFamily: 'OpenSans',
-                                                fontSize: 16,
-                                                color: Colors.black87),
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            width: 100,
+                                            height: 50,
+                                            child: Text(
+                                              shopList[index]['name'],
+                                              maxLines: 2,
+                                              softWrap: true,
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 16,
+                                                  color: Colors.black87),
+                                            ),
                                           )
                                         ],
                                       ),
@@ -175,8 +160,32 @@ class DashboardPage extends StatelessWidget {
                       );
                     },
                   ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 4.0),
+                    child: Text(
+                      "Shop by category",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'OpenSans',
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    height: height * 0.25,
+                    child: GridView.count(
+                      scrollDirection: Axis.horizontal,
+                      crossAxisCount: 2,
+                      children: List.generate(
+                          16,
+                          (index) => categoryCard(
+                              context, categories[index], catImages[index])),
+                    ),
+                  ),
                   Padding(
-                    padding: EdgeInsets.only(left: 10.0),
+                    padding: EdgeInsets.only(left: 10.0, top: 10.0),
                     child: Text(
                       "Recommended Shops",
                       textAlign: TextAlign.left,
