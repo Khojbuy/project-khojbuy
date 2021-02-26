@@ -5,8 +5,19 @@ import 'package:Khojbuy/Pages/Story/story_page.dart';
 import 'package:Khojbuy/Widgets/card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+getToken() async {
+  String token = await _firebaseMessaging.getToken();
+  print(token);
+  FirebaseFirestore.instance
+      .collection('BuyerData')
+      .doc(FirebaseAuth.instance.currentUser.uid)
+      .update({'FCM': token});
+}
 
 class DashboardPage extends StatelessWidget {
   @override
@@ -39,6 +50,9 @@ class DashboardPage extends StatelessWidget {
                 return CircularProgressIndicator();
               }
               final String city = snapshot.data['City'];
+              if (snapshot.data['FCM'] == '') {
+                getToken();
+              }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
