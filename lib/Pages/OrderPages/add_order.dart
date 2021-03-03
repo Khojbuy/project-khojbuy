@@ -48,13 +48,13 @@ class _AddOrderPageState extends State<AddOrderPage> {
               })
         ],
         title: Text(
-          "PLACE ORDER",
+          "Place Order",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold,
-              fontSize: MediaQuery.of(context).size.shortestSide * 0.1),
+              fontSize: MediaQuery.of(context).size.shortestSide * 0.068),
         ),
       ),
       body: Container(

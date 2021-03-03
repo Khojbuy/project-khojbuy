@@ -35,7 +35,7 @@ class _AddRequestPageState extends State<AddRequestPage> {
         centerTitle: true,
         backgroundColor: primaryColour,
         title: Text(
-          "SEND REQUEST",
+          "Send Request",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white,

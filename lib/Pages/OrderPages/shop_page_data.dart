@@ -41,6 +41,56 @@ class _ShopPageState extends State<ShopPage> {
               fontSize: MediaQuery.of(context).size.shortestSide * 0.075),
         ),
       ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            RaisedButton(
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0),
+                ),
+                textColor: Colors.white,
+                child: Text(
+                  "PLACE ORDER",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: 'OpenSans'),
+                ),
+                color: primaryColour.withOpacity(0.9),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddOrderPage(widget.shopDetails)),
+                  );
+                }),
+            RaisedButton(
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0),
+                ),
+                textColor: Colors.white,
+                child: Text(
+                  "CONTACT US",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: 'OpenSans'),
+                ),
+                color: primaryColour.withOpacity(0.9),
+                onPressed: () async {
+                  final Uri feedback = Uri(
+                    scheme: 'tel',
+                    path: widget.shopDetails['PhoneNo'],
+                  );
+                  var url = feedback.toString();
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch';
+                  }
+                }),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -93,12 +143,15 @@ class _ShopPageState extends State<ShopPage> {
               ),
               Row(
                 children: [
-                  Text(widget.shopDetails['AddressLocation'],
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'OpenSans')),
+                  Container(
+                    width: 200,
+                    child: Text(widget.shopDetails['AddressLocation'],
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans')),
+                  ),
                   SizedBox(
                     width: 12,
                   ),
@@ -262,56 +315,6 @@ class _ShopPageState extends State<ShopPage> {
                     )
                   ],
                 ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  RaisedButton(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
-                      ),
-                      textColor: Colors.white,
-                      child: Text(
-                        "PLACE ORDER",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'OpenSans'),
-                      ),
-                      color: primaryColour.withOpacity(0.9),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  AddOrderPage(widget.shopDetails)),
-                        );
-                      }),
-                  RaisedButton(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
-                      ),
-                      textColor: Colors.white,
-                      child: Text(
-                        "CONTACT US",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'OpenSans'),
-                      ),
-                      color: primaryColour.withOpacity(0.9),
-                      onPressed: () async {
-                        final Uri feedback = Uri(
-                          scheme: 'tel',
-                          path: widget.shopDetails['PhoneNo'],
-                        );
-                        var url = feedback.toString();
-                        if (await canLaunch(url)) {
-                          await launch(url);
-                        } else {
-                          throw 'Could not launch';
-                        }
-                      }),
-                ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),

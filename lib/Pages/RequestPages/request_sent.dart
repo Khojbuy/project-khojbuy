@@ -78,7 +78,7 @@ requestList(BuildContext context) {
                               fontFamily: 'OpenSans',
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
-                              fontSize: fontSize * 0.65)),
+                              fontSize: 14)),
                       subtitle: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -88,7 +88,7 @@ requestList(BuildContext context) {
                                 fontFamily: 'OpenSans',
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black87,
-                                fontSize: fontSize * 0.55),
+                                fontSize: 12),
                           ),
                           (doc['Status'] == 'completed')
                               ? Text(

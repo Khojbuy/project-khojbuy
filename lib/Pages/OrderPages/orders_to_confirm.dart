@@ -84,7 +84,7 @@ orderToConfirm(BuildContext context) {
                       child: Card(
                         margin: new EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 6.0),
-                        elevation: 20,
+                        elevation: 10,
                         child: ListTile(
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: 20.0, vertical: 10.0),
@@ -94,7 +94,7 @@ orderToConfirm(BuildContext context) {
                                 fontFamily: 'OpenSans',
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
-                                fontSize: fontSize * 0.7),
+                                fontSize: 14),
                           ),
                           subtitle: Text(
                             "You had ordered " +
@@ -104,7 +104,7 @@ orderToConfirm(BuildContext context) {
                                 fontFamily: 'OpenSans',
                                 fontWeight: FontWeight.w700,
                                 color: Colors.black87,
-                                fontSize: fontSize * 0.55),
+                                fontSize: 12),
                           ),
                           trailing: Text(
                             stat,
@@ -112,7 +112,7 @@ orderToConfirm(BuildContext context) {
                                 fontFamily: 'OpenSans',
                                 fontWeight: FontWeight.w600,
                                 color: primaryColour.withOpacity(0.8),
-                                fontSize: fontSize * 0.48),
+                                fontSize: 12),
                           ),
                         ),
                       ),
