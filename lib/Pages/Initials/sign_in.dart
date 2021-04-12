@@ -213,7 +213,7 @@ class _SignInPageState extends State<SignInPage> {
                                 // ignore: missing_return
                                 validator: (val) {
                                   if (val.length == 0 || val.length != 10) {
-                                    return "Phone number is not validr";
+                                    return "Phone number is not valid";
                                   } else {
                                     return null;
                                   }

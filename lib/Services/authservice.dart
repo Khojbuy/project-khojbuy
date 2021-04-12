@@ -21,7 +21,7 @@ class AuthService {
 
   signOut(BuildContext context) {
     FirebaseAuth.instance.signOut();
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => GetStartedPage()),
     );
@@ -37,10 +37,12 @@ class AuthService {
         'Name': name,
         'City': city,
         'Contact': phnNo,
-        'Email': ''
+        'Email': '',
+        'FCM': ''
       }).then((value) {
         print(name + 'added');
       });
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Home()),
