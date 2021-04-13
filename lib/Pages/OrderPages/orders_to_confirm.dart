@@ -69,8 +69,6 @@ orderToConfirm(BuildContext context) {
                     } else {
                       stat = 'Order is completed';
                     }
-                    var fontSize =
-                        MediaQuery.of(context).size.shortestSide * 0.069;
 
                     return InkWell(
                       onTap: () {
