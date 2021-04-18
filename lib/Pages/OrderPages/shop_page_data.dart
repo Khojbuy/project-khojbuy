@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/add_order.dart';
 import 'package:Khojbuy/Pages/OrderPages/image_viewer.dart';
 import 'package:Khojbuy/Pages/OrderPages/shop_cart.dart';
+import 'package:Khojbuy/Pages/OrderPages/shop_reviews.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShopPage extends StatefulWidget {
@@ -20,9 +25,6 @@ class ShopPage extends StatefulWidget {
 class _ShopPageState extends State<ShopPage> {
   final shopDetails;
   _ShopPageState(this.shopDetails);
-  bool star = false;
-  int rate = 0;
-  String review = '';
 
   @override
   Widget build(BuildContext context) {
@@ -296,12 +298,13 @@ class _ShopPageState extends State<ShopPage> {
                         ),
                   InkWell(
                     onTap: () {
-                      // Navigate to the todo of the reviwes
-                      /* Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Catalouge(shopDetails['Menu'])),
-                  ); */
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Catalouge(
+                                widget.shopDetails.id,
+                                widget.shopDetails['ShopName'])),
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -350,6 +353,34 @@ class _ShopPageState extends State<ShopPage> {
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
+                              final snackBar = SnackBar(
+                                content: Text('Item added to the cart!'),
+                                action: SnackBarAction(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ShopCart(widget.shopDetails)),
+                                    );
+                                  },
+                                  label:
+                                      'Checkout cart ${widget.shopDetails['ShopName']} ',
+                                ),
+                              );
+
+                              addItemtoCart(
+                                  String itemName, String shopName) async {
+                                SharedPreferences preferences =
+                                    await SharedPreferences.getInstance();
+                                String cart =
+                                    jsonDecode(preferences.get((shopName)));
+                                cart = cart + "{$itemName : 1}";
+                                preferences.setString(
+                                    shopName, jsonEncode(cart));
+                                print(preferences.getString(shopName));
+                              }
+
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 12.0, horizontal: 12.0),
@@ -467,6 +498,30 @@ class _ShopPageState extends State<ShopPage> {
                                         ),
                                       ],
                                     ),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        await addItemtoCart(
+                                            menu[index]['ItemName'],
+                                            widget.shopDetails['ShopName']);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: primaryColour,
+                                        elevation: 10,
+                                        shape: new RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Add to Cart",
+                                        style: TextStyle(
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 12,
+                                            color: Colors.white),
+                                      ),
+                                    )
                                   ],
                                 ),
                               );

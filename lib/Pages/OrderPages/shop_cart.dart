@@ -26,7 +26,7 @@ class _ShopCartState extends State<ShopCart> {
         future: prefsInit(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Container(
-            color: Colors.blue,
+            child: Text(preferences.get(documentSnapshot['ShopName'])),
           );
         },
       ),
