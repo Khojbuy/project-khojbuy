@@ -9,17 +9,20 @@ import 'package:flutter/material.dart';
 
 class AddOrderPage extends StatefulWidget {
   final QueryDocumentSnapshot documentSnapshot;
-  AddOrderPage(this.documentSnapshot);
+  final List<dynamic> items;
+  AddOrderPage(this.documentSnapshot, this.items);
 
   @override
-  _AddOrderPageState createState() => _AddOrderPageState(documentSnapshot);
+  _AddOrderPageState createState() =>
+      _AddOrderPageState(documentSnapshot, items);
 }
 
 class _AddOrderPageState extends State<AddOrderPage> {
   final QueryDocumentSnapshot documentSnapshot;
+  List<dynamic> items;
   final formkey = new GlobalKey<FormState>();
   final orderkey = GlobalKey<ScaffoldState>();
-  _AddOrderPageState(this.documentSnapshot);
+  _AddOrderPageState(this.documentSnapshot, this.items);
   List<Map<String, dynamic>> list = [];
   String itemName, amount, remark = '';
 

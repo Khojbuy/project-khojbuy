@@ -1,13 +1,11 @@
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:Khojbuy/Pages/OrderPages/add_order.dart';
-import 'package:Khojbuy/Pages/OrderPages/shop_catalouge.dart';
+import 'package:Khojbuy/Pages/OrderPages/image_viewer.dart';
+import 'package:Khojbuy/Pages/OrderPages/shop_cart.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -25,8 +23,10 @@ class _ShopPageState extends State<ShopPage> {
   bool star = false;
   int rate = 0;
   String review = '';
+
   @override
   Widget build(BuildContext context) {
+    var menu = widget.shopDetails['Menu'];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -40,6 +40,21 @@ class _ShopPageState extends State<ShopPage> {
               fontWeight: FontWeight.bold,
               fontSize: MediaQuery.of(context).size.shortestSide * 0.075),
         ),
+        actions: [
+          IconButton(
+              icon: Icon(
+                Icons.shopping_bag_rounded,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ShopCart(widget.shopDetails)),
+                );
+              })
+        ],
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(10.0),
@@ -62,7 +77,8 @@ class _ShopPageState extends State<ShopPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AddOrderPage(widget.shopDetails)),
+                        builder: (context) =>
+                            AddOrderPage(widget.shopDetails, [])),
                   );
                 }),
             RaisedButton(
@@ -291,18 +307,19 @@ class _ShopPageState extends State<ShopPage> {
                   : Container(),
               InkWell(
                 onTap: () {
-                  Navigator.push(
+                  // Navigate to the todo of the reviwes
+                  /* Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Catalouge(shopDetails['Menu'])),
-                  );
+                  ); */
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RichText(
                         text: TextSpan(
-                            text: "Check Shop's Product List",
+                            text: "Check the Shop's Reviews",
                             style: TextStyle(
                                 color: primaryColour,
                                 fontSize: 12,
@@ -317,6 +334,152 @@ class _ShopPageState extends State<ShopPage> {
                 ),
               ),
               Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: RichText(
+                    text: TextSpan(
+                        text: "Product Catalouge",
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans'))),
+              ),
+              SingleChildScrollView(
+                child: menu.length == 0
+                    ? Center(
+                        child: Text(
+                          'The shop has no specific product list uploaded',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontFamily: 'OpenSans',
+                              fontSize: 16),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: menu.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 12.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    menu[index]['Image'] == ''
+                                        ? Container(
+                                            height: 100,
+                                            width: 100,
+                                            margin: EdgeInsets.only(
+                                                left: 16, bottom: 6),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.blue.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0),
+                                            ),
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.no_photography_rounded,
+                                                color: Colors.white,
+                                                size: 40,
+                                              ),
+                                            ),
+                                          )
+                                        : GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ImageViewer(menu[index]
+                                                            ['Image'])),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 100,
+                                              width: 100,
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue
+                                                    .withOpacity(0.2),
+                                                borderRadius:
+                                                    BorderRadius.circular(16.0),
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                  left: 16, bottom: 6),
+                                              child: CachedNetworkImage(
+                                                imageUrl: menu[index]['Image'],
+                                                fadeInCurve: Curves.easeIn,
+                                                fit: BoxFit.fill,
+                                                fadeOutDuration:
+                                                    Duration(microseconds: 100),
+                                                progressIndicatorBuilder: (context,
+                                                        url,
+                                                        downloadProgress) =>
+                                                    Container(
+                                                        height: 10,
+                                                        child: CircularProgressIndicator(
+                                                            value:
+                                                                downloadProgress
+                                                                    .progress)),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(Icons.error),
+                                              ),
+                                            ),
+                                          ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                            menu[index]['ItemName'],
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 14),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 75,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide *
+                                              0.5,
+                                          child: Text(
+                                            menu[index]['Detail'],
+                                            maxLines: 5,
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontFamily: 'OpenSans',
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      '₹ ' + menu[index]['Price'],
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+              ),
+              /* Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -571,7 +734,7 @@ class _ShopPageState extends State<ShopPage> {
                             }
                           });
                     },
-                  ))
+                  )) */
             ],
           ),
         ),

@@ -1,13 +1,35 @@
+import 'dart:convert';
+
 import 'package:Khojbuy/Constants/colour.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:Khojbuy/Pages/OrderPages/image_viewer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Catalouge extends StatelessWidget {
+class Catalouge extends StatefulWidget {
+  final QueryDocumentSnapshot shopDetails;
   final List<dynamic> menu;
-  Catalouge(this.menu);
+  Catalouge(this.menu, this.shopDetails);
+
+  @override
+  _CatalougeState createState() => _CatalougeState(menu, shopDetails);
+}
+
+class _CatalougeState extends State<Catalouge> {
+  List<dynamic> menu;
+  QueryDocumentSnapshot shopDetails;
+  _CatalougeState(this.menu, this.shopDetails);
+
   @override
   Widget build(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Item added to the cart!'),
+      action: SnackBarAction(
+        onPressed: () {},
+        label: 'Checkout your cart for ${widget.shopDetails['ShopName']} ',
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -23,7 +45,7 @@ class Catalouge extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: menu.length == 0
+        child: widget.menu.length == 0
             ? Center(
                 child: Text(
                   'The shop has no specific product list uploaded',
@@ -35,7 +57,7 @@ class Catalouge extends StatelessWidget {
                 ),
               )
             : ListView.builder(
-                itemCount: menu.length,
+                itemCount: widget.menu.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
@@ -44,13 +66,13 @@ class Catalouge extends StatelessWidget {
                         vertical: 12.0, horizontal: 12.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            menu[index]['Image'] == ''
+                            widget.menu[index]['Image'] == ''
                                 ? Container(
                                     height: 100,
                                     width: 100,
@@ -74,7 +96,7 @@ class Catalouge extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => ImageViewer(
-                                                menu[index]['Image'])),
+                                                widget.menu[index]['Image'])),
                                       );
                                     },
                                     child: Container(
@@ -88,7 +110,7 @@ class Catalouge extends StatelessWidget {
                                       margin:
                                           EdgeInsets.only(left: 16, bottom: 6),
                                       child: CachedNetworkImage(
-                                        imageUrl: menu[index]['Image'],
+                                        imageUrl: widget.menu[index]['Image'],
                                         fadeInCurve: Curves.easeIn,
                                         fit: BoxFit.fill,
                                         fadeOutDuration:
@@ -111,7 +133,7 @@ class Catalouge extends StatelessWidget {
                               children: [
                                 Container(
                                   child: Text(
-                                    menu[index]['ItemName'],
+                                    widget.menu[index]['ItemName'],
                                     style: TextStyle(
                                         color: Colors.black87,
                                         fontFamily: 'OpenSans',
@@ -124,7 +146,7 @@ class Catalouge extends StatelessWidget {
                                       MediaQuery.of(context).size.shortestSide *
                                           0.5,
                                   child: Text(
-                                    menu[index]['Detail'],
+                                    widget.menu[index]['Detail'],
                                     maxLines: 5,
                                     style: TextStyle(
                                         color: Colors.black54,
@@ -135,7 +157,7 @@ class Catalouge extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              '₹ ' + menu[index]['Price'],
+                              '₹ ' + widget.menu[index]['Price'],
                               style: TextStyle(
                                   color: Colors.black54,
                                   fontFamily: 'OpenSans',
@@ -143,11 +165,41 @@ class Catalouge extends StatelessWidget {
                             ),
                           ],
                         ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await addItemtoCart(widget.menu[index]['ItemName'],
+                                widget.shopDetails['ShopName']);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: primaryColour,
+                            elevation: 10,
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: Text(
+                            "Add to Cart",
+                            style: TextStyle(
+                                fontFamily: 'OpenSans',
+                                fontSize: 12,
+                                color: Colors.white),
+                          ),
+                        )
                       ],
                     ),
                   );
                 }),
       ),
     );
+  }
+
+  addItemtoCart(String itemName, String shopName) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String cart = jsonDecode(preferences.get((shopName)));
+    cart = cart + "{$itemName : 1}";
+    preferences.setString(shopName, jsonEncode(cart));
+    print(preferences.getString(shopName));
   }
 }
