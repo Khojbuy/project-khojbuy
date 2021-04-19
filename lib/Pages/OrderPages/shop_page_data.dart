@@ -109,11 +109,12 @@ class _ShopPageState extends State<ShopPage> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: SingleChildScrollView(
               child: Column(
+                verticalDirection: VerticalDirection.down,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -336,69 +337,107 @@ class _ShopPageState extends State<ShopPage> {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'OpenSans'))),
                   ),
-                  SingleChildScrollView(
-                    child: menu.length == 0
-                        ? Center(
-                            child: Text(
-                              'The shop has no specific product list uploaded',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 16),
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: menu.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              final snackBar = SnackBar(
-                                content: Text('Item added to the cart!'),
-                                action: SnackBarAction(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ShopCart(widget.shopDetails)),
-                                    );
-                                  },
-                                  label:
-                                      'Checkout cart ${widget.shopDetails['ShopName']} ',
-                                ),
-                              );
+                  menu.length == 0
+                      ? Center(
+                          child: Text(
+                            'The shop has no specific product list uploaded',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontFamily: 'OpenSans',
+                                fontSize: 16),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: menu.length,
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            final snackBar = SnackBar(
+                              content: Text('Item added to the cart!'),
+                              action: SnackBarAction(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ShopCart(widget.shopDetails)),
+                                  );
+                                },
+                                label:
+                                    'Checkout cart ${widget.shopDetails['ShopName']} ',
+                              ),
+                            );
 
-                              addItemtoCart(
-                                  String itemName, String shopName) async {
-                                SharedPreferences preferences =
-                                    await SharedPreferences.getInstance();
-                                String cart =
-                                    jsonDecode(preferences.get((shopName)));
-                                cart = cart + "{$itemName : 1}";
-                                preferences.setString(
-                                    shopName, jsonEncode(cart));
-                                print(preferences.getString(shopName));
+                            addItemtoCart(
+                                String itemName, String shopName) async {
+                              SharedPreferences preferences =
+                                  await SharedPreferences.getInstance();
+                              print(preferences.get(shopName).toString());
+                              if (preferences.get(shopName) == null) {
+                                List<String> cart = [itemName];
+                                preferences.setStringList(shopName, cart);
+                              } else {
+                                List<String> newCart =
+                                    preferences.getStringList(shopName);
+                                newCart.add(itemName);
+                                preferences.setStringList(shopName, newCart);
                               }
+                              print(preferences.get(shopName).toString());
+                              // cart = cart + "{$itemName : 1}";
+                              //preferences.setString(shopName, jsonEncode(cart));
+                              // print(preferences.getString(shopName));
+                            }
 
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0, horizontal: 12.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        menu[index]['Image'] == ''
-                                            ? Container(
-                                                height: 100,
-                                                width: 100,
-                                                margin: EdgeInsets.only(
-                                                    left: 16, bottom: 6),
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12.0,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      menu[index]['Image'] == ''
+                                          ? Container(
+                                              height: 95,
+                                              width: 95,
+                                              margin: EdgeInsets.only(
+                                                left: 10,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue
+                                                    .withOpacity(0.2),
+                                                borderRadius:
+                                                    BorderRadius.circular(16.0),
+                                              ),
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.no_photography_rounded,
+                                                  color: Colors.white,
+                                                  size: 40,
+                                                ),
+                                              ),
+                                            )
+                                          : GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ImageViewer(
+                                                              menu[index]
+                                                                  ['Image'])),
+                                                );
+                                              },
+                                              child: Container(
+                                                height: 95,
+                                                width: 95,
                                                 decoration: BoxDecoration(
                                                   color: Colors.blue
                                                       .withOpacity(0.2),
@@ -406,99 +445,73 @@ class _ShopPageState extends State<ShopPage> {
                                                       BorderRadius.circular(
                                                           16.0),
                                                 ),
-                                                child: Center(
-                                                  child: Icon(
-                                                    Icons
-                                                        .no_photography_rounded,
-                                                    color: Colors.white,
-                                                    size: 40,
-                                                  ),
+                                                margin: EdgeInsets.only(
+                                                  left: 10,
                                                 ),
-                                              )
-                                            : GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ImageViewer(
-                                                                menu[index]
-                                                                    ['Image'])),
-                                                  );
-                                                },
-                                                child: Container(
-                                                  height: 100,
-                                                  width: 100,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.blue
-                                                        .withOpacity(0.2),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16.0),
-                                                  ),
-                                                  margin: EdgeInsets.only(
-                                                      left: 16, bottom: 6),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: menu[index]
-                                                        ['Image'],
-                                                    fadeInCurve: Curves.easeIn,
-                                                    fit: BoxFit.fill,
-                                                    fadeOutDuration: Duration(
-                                                        microseconds: 100),
-                                                    progressIndicatorBuilder: (context,
-                                                            url,
-                                                            downloadProgress) =>
-                                                        Container(
-                                                            height: 10,
-                                                            child: CircularProgressIndicator(
-                                                                value: downloadProgress
-                                                                    .progress)),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Icon(Icons.error),
-                                                  ),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: menu[index]
+                                                      ['Image'],
+                                                  fadeInCurve: Curves.easeIn,
+                                                  fit: BoxFit.fill,
+                                                  fadeOutDuration: Duration(
+                                                      microseconds: 100),
+                                                  progressIndicatorBuilder: (context,
+                                                          url,
+                                                          downloadProgress) =>
+                                                      Container(
+                                                          height: 10,
+                                                          child: CircularProgressIndicator(
+                                                              value:
+                                                                  downloadProgress
+                                                                      .progress)),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Icon(Icons.error),
                                                 ),
                                               ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                menu[index]['ItemName'],
-                                                style: TextStyle(
-                                                    color: Colors.black87,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 14),
-                                              ),
                                             ),
-                                            Container(
-                                              height: 75,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .shortestSide *
-                                                  0.5,
-                                              child: Text(
-                                                menu[index]['Detail'],
-                                                maxLines: 5,
-                                                style: TextStyle(
-                                                    color: Colors.black54,
-                                                    fontFamily: 'OpenSans',
-                                                    fontSize: 12),
-                                              ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              menu[index]['ItemName'],
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 14),
                                             ),
-                                          ],
-                                        ),
-                                        Text(
-                                          '₹ ' + menu[index]['Price'],
-                                          style: TextStyle(
-                                              color: Colors.black54,
-                                              fontFamily: 'OpenSans',
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                    ElevatedButton(
+                                          ),
+                                          Container(
+                                            height: 75,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide *
+                                                0.5,
+                                            child: Text(
+                                              menu[index]['Detail'],
+                                              maxLines: 5,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontFamily: 'OpenSans',
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        '₹ ' + menu[index]['Price'],
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: ElevatedButton(
                                       onPressed: () async {
                                         await addItemtoCart(
                                             menu[index]['ItemName'],
@@ -508,25 +521,25 @@ class _ShopPageState extends State<ShopPage> {
                                       },
                                       style: ElevatedButton.styleFrom(
                                         primary: primaryColour,
-                                        elevation: 10,
+                                        elevation: 2,
                                         shape: new RoundedRectangleBorder(
                                           borderRadius:
                                               new BorderRadius.circular(20.0),
                                         ),
                                       ),
                                       child: Text(
-                                        "Add to Cart",
+                                        "   Add to Cart   ",
                                         style: TextStyle(
                                             fontFamily: 'OpenSans',
                                             fontSize: 12,
                                             color: Colors.white),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }),
-                  ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          }),
                 ],
               ),
             ),
