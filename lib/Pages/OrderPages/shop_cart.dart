@@ -48,12 +48,21 @@ class _ShopCartState extends State<ShopCart> {
                   children: [
                     TextButton.icon(
                         onPressed: () {
+                          List<Map<String, dynamic>> temp = [];
+                          for (var item in cartItems) {
+                            temp.add({
+                              'ItemName': item,
+                              'Amount': '1',
+                              'Availability': false,
+                              'Price': 0,
+                            });
+                          }
                           Navigator.of(context).pop();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    AddOrderPage(documentSnapshot, [])),
+                                    AddOrderPage(documentSnapshot, temp)),
                           );
                         },
                         icon: Icon(

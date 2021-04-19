@@ -19,11 +19,10 @@ class AddOrderPage extends StatefulWidget {
 
 class _AddOrderPageState extends State<AddOrderPage> {
   final QueryDocumentSnapshot documentSnapshot;
-  List<dynamic> items;
   final formkey = new GlobalKey<FormState>();
   final orderkey = GlobalKey<ScaffoldState>();
-  _AddOrderPageState(this.documentSnapshot, this.items);
-  List<Map<String, dynamic>> list = [];
+  _AddOrderPageState(this.documentSnapshot, this.list);
+  List<Map<String, dynamic>> list;
   String itemName, amount, remark = '';
 
   @override
